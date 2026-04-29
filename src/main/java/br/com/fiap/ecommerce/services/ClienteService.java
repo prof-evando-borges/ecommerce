@@ -1,7 +1,8 @@
 package br.com.fiap.ecommerce.services;
 
-import br.com.fiap.teste.entities.Produto;
-import br.com.fiap.teste.repositories.ProdutoRepository;
+import br.com.fiap.ecommerce.entities.Cliente;
+import br.com.fiap.ecommerce.repositories.ClienteRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,37 +12,29 @@ import java.util.List;
 public class ClienteService {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ClienteRepository clienteRepository;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
-        this.produtoRepository = produtoRepository;
+    public ClienteService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
-    public List<Produto> findByNomeContainingIgnoreCase(String nome) {
-        return produtoRepository.findByNomeContainingIgnoreCase(nome);
+    public Cliente buscarPorId(Long id) {
+        return clienteRepository.findById(id).orElse(null);
     }
 
-    public Produto findById(Long id) {
-        return produtoRepository.findById(id).orElse(null);
+    public  List<Cliente> listarClientes() {
+        return clienteRepository.findAll();
     }
 
-    public  List<Produto> findAll() {
-        return produtoRepository.findAll();
+    public Cliente salvarBanco(Cliente cliente) {
+        return clienteRepository.save(cliente);
     }
 
-    public Produto save(Produto produto) {
-        return produtoRepository.save(produto);
+    public Cliente atualizarDados(Cliente cliente) {
+        return clienteRepository.save(cliente);
     }
 
-    public Produto update(Produto produto) {
-        return produtoRepository.save(produto);
-    }
-
-    public void delete(Produto produto) {
-        produtoRepository.delete(produto);
-    }
-
-    public void delete(Long id) {
-        produtoRepository.deleteById(id);
+    public void deletarConta(Long id) {
+        clienteRepository.deleteById(id);
     }
 }

@@ -12,10 +12,7 @@ public class Lojista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idLojista;
-
-    @Id
-    private long idCliente;
+    private Long id;
 
     private String cnpj;
     private String nome;
