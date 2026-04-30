@@ -13,8 +13,9 @@ public class UnidadeMedidaTamanho {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_UNIDADE_MEDIDA_TAMANHO")
     private Integer unidadeMedidaTamanhoId;
 
-    @Column(nullable = false)
+    @Column(name = "UNIDADE_MEDIDA_TAMANHO", nullable = false, length = 50)
     private String unidadeMedidaTamanho;
 }
