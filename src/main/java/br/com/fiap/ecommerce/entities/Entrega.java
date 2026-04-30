@@ -4,10 +4,11 @@ import br.com.fiap.ecommerce.models.StatusEnum;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "Entrega")
 public class Entrega {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ENTREFGA", nullable = false)
+    @Column(name = "ID_ENTREGA", nullable = false)
     private Long id;
 
     @Column(name = "STATUS", nullable = false)

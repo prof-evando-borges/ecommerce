@@ -3,6 +3,7 @@ package br.com.fiap.ecommerce.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "Transportadora")
 public class Transportadora {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
