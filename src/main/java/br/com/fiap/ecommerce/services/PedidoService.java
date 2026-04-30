@@ -17,35 +17,19 @@ public class PedidoService {
 
     @Transactional
     public Pedido salvar(Pedido pedido) {
-        if (pedido.getid() == null || pedido.getid().trim().isEmpty()) {
-            throw new IllegalArgumentException("O número do ID é obrigatório.");
+        if (pedido.getnumeroPedido() == null || pedido.getnumeroPedido().trim().isEmpty()) {
+            throw new IllegalArgumentException("O número do pedido é obrigatório.");
         }
 
-        Optional<Categoria> existente = repository.findByNomeCategoria(categoria.getNomeCategoria());
-        if (existente.isPresent() && !existente.get().getIdCategoria().equals(categoria.getIdCategoria())) {
-            throw new IllegalArgumentException("Já existe uma categoria cadastrada com este nome.");
+        Optional<Pedido> existente = repository.findBynumeroPedido(pedido.getnumeroPedido());
+        if (existente.isPresent() && !existente.get().getnumeroPedido().equals(pedido.getnumeroPedido())) {
+            throw new IllegalArgumentException("Já existe um pedido cadastrada com este numero.");
         }
 
-        return repository.save(categoria);
+        return repository.save(pedido);
     }
 
-    public List<Categoria> listarTodas() {
-        return repository.findAll();
+    public Pedido buscarPorId(String id) {
+        return repository.findBynumeroId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado com o número: " + id));
     }
-
-    public Categoria buscarPorId(Integer id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada para o ID: " + id));
-    }
-
-    public Categoria buscarPorNome(String nome) {
-        return repository.findByNomeCategoria(nome)
-                .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada com o nome: " + nome));
-    }
-
-    @Transactional
-    public void deletar(Integer id) {
-        Categoria categoria = buscarPorId(id);
-        repository.delete(categoria);
-    }
-}
