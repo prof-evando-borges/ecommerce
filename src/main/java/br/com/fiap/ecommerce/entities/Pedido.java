@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "pedido")
+@Getter
+@Setter
 @Data
 public class Pedido {
 
