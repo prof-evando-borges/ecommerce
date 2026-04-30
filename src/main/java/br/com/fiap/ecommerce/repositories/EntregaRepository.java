@@ -1,6 +1,6 @@
 package br.com.fiap.ecommerce.repositories;
 
-import br.com.fiap.ecommerce.models.Entrega;
+import br.com.fiap.ecommerce.entities.Entrega;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

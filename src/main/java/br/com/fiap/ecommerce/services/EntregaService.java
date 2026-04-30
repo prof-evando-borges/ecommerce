@@ -1,13 +1,12 @@
 package br.com.fiap.ecommerce.services;
 
 import br.com.fiap.ecommerce.exceptions.EntregaException;
-import br.com.fiap.ecommerce.models.Entrega;
+import br.com.fiap.ecommerce.entities.Entrega;
 import br.com.fiap.ecommerce.models.StatusEnum;
 import br.com.fiap.ecommerce.repositories.EntregaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
 import java.util.List;
 
 @Service
