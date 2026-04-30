@@ -1,7 +1,7 @@
 package br.com.fiap.ecommerce.services;
 
 import br.com.fiap.ecommerce.exceptions.TransportadoraException;
-import br.com.fiap.ecommerce.models.Transportadora;
+import br.com.fiap.ecommerce.entities.Transportadora;
 import br.com.fiap.ecommerce.repositories.TransportadoraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

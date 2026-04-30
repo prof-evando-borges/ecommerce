@@ -1,19 +1,28 @@
-package br.com.fiap.ecommerce.models;
+package br.com.fiap.ecommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import br.com.fiap.ecommerce.models.StatusEnum;
+import jakarta.persistence.*;
 
 @Entity
 public class Entrega {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_ENTREFGA", nullable = false)
     private Long id;
+
+    @Column(name = "STATUS", nullable = false)
     private StatusEnum status;
+
+    @Column(name = "VALOR_FRETE", nullable = false)
     private Double valorFrete;
+
+    @Column(name = "PRAZO_DIAS", nullable = false)
     private int prazoDias;
+
+    @Column(name = "ID_PEDIDO", nullable = false)
     private int pedidoId;
+
+    @Column(name = "ID_TRANSPORTADORA", nullable = false)
     private int transportadoraId;
 
     public Entrega(){}

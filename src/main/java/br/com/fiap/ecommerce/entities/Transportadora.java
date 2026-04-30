@@ -1,19 +1,27 @@
-package br.com.fiap.ecommerce.models;
+package br.com.fiap.ecommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Transportadora {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_TRANSPORTADORA", nullable = false)
     private Long id;
+
+    @Column(name = "NOME", nullable = false, length = 50)
     private String nome;
+
+    @Column(name = "PESO_MIN", nullable = false)
     private Double pesoMin;
+
+    @Column(name = "PESO_MAX", nullable = false)
     private Double pesoMax;
+
+    @Column(name = "VALOR_BASE", nullable = false)
     private Double valorBase;
+
+    @Column(name = "PRAZO_DIAS", nullable = false)
     private int prazoDias;
 
     public Transportadora(){}
