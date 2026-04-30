@@ -16,12 +16,12 @@ public class ItemPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Column(name = "IDPRODUTO", nullable = false)
+    @Column(name = "ID_PRODUTO", nullable = false)
     private int idProduto;
 
-    @Column(name = "IDPEDIDO", nullable = false)
+    @Column(name = "ID_PEDIDO", nullable = false)
     private int idPedido;
 
-    @Column(name = "VALORPEDIDO", nullable = false)
+    @Column(name = "VALOR_PEDIDO", nullable = false)
     private Double valorPedido;
 }
