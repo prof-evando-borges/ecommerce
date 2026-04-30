@@ -1,29 +1,28 @@
 package br.com.fiap.ecommerce.entities;
 
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "tabela_pagamentos")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pagamento {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPagamento;
+
+    @Column(nullable = false)
     private String metodo;
+
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
+
+    @Column(nullable = false)
     private String status;
-
-    public Pagamento(String id, String metodo, BigDecimal valor, String status) {
-        this.id = id;
-        this.metodo = metodo;
-        this.valor = valor;
-        this.status = status;
-    }
-
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
-    public String getMetodo() { return metodo; }
-    public void setMetodo(String metodo) { this.metodo = metodo; }
-
-    public BigDecimal getValor() { return valor; }
-    public void setValor(BigDecimal valor) { this.valor = valor; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
 }
