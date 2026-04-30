@@ -4,7 +4,7 @@ package br.com.fiap.ecommerce.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "comentarios")
+@Table(name = "COMENTARIOS")
 public class Comentario {
 
     @Id
