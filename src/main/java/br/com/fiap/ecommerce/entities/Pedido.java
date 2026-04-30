@@ -17,6 +17,6 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int id;
     private int usuarioId;
+    private int numeroPedido;
 }

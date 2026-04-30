@@ -17,8 +17,8 @@ public class PedidoService {
 
     @Transactional
     public Pedido salvar(Pedido pedido) {
-        if (categoria.getNomeCategoria() == null || categoria.getNomeCategoria().trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome da categoria é obrigatório.");
+        if (pedido.getid() == null || pedido.getid().trim().isEmpty()) {
+            throw new IllegalArgumentException("O número do ID é obrigatório.");
         }
 
         Optional<Categoria> existente = repository.findByNomeCategoria(categoria.getNomeCategoria());
