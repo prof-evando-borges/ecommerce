@@ -9,4 +9,8 @@ import java.util.List;
 
 @Repository
 public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
+
+    List<Avaliacao> findByProdutoId(Long produtoId);
+
+    List<Avaliacao> findByClienteId(Long clienteId);
 }
