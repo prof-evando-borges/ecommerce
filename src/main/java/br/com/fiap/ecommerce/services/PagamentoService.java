@@ -1,22 +1,29 @@
 package br.com.fiap.ecommerce.services;
-
+ 
 import br.com.fiap.ecommerce.entities.Pagamento;
-import java.util.ArrayList;
+import br.com.fiap.ecommerce.repositories.PagamentoRepository;
+import org.springframework.stereotype.Service;
+ 
 import java.util.List;
-
+ 
+@Service[cite: 2]
 public class PagamentoService {
-
-    public void inserir(Pagamento pagamento) {
-        // Implementação da regra de negócio para registrar o pagamento
-        // Aqui entrará a chamada para o PagamentoDAO posteriormente
-    }
-
-    public List<Pagamento> listar() {
-        // Implementação para buscar os pagamentos registrados
-        return new ArrayList<>();
-    }
-
-    public void atualizarStatus(String idPagamento, String novoStatus) {
-        // Implementação para alterar o status de um pagamento específico
-    }
+ 
+    private final PagamentoRepository pagamentoRepository;
+ 
+    public PagamentoService(PagamentoRepository pagamentoRepository) {
+        this.pagamentoRepository = pagamentoRepository;
+    }[cite: 2]
+ 
+    public List<Pagamento> listarTodos() {
+        return pagamentoRepository.findAll();
+    }[cite: 2]
+ 
+    public Pagamento salvar(Pagamento pagamento) {
+        return pagamentoRepository.save(pagamento);
+    }[cite: 2]
+ 
+    public void deletar(Long id) {
+        pagamentoRepository.deleteById(id);
+    }[cite: 2]
 }
