@@ -1,5 +1,6 @@
 package br.com.fiap.ecommerce.entities;
 
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 
 @Entity
