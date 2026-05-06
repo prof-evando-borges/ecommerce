@@ -12,12 +12,14 @@ import java.util.UUID;
 public class Setor {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ID")
     private UUID id;
-    @Column(nullable = false, length = 100)
+    @Column(name = "NOME", nullable = false, length = 100)
     private String nome;
-    @Column(name = "numero_corredor", nullable = false)
+    @Column(name = "NUMERO_CORREDOR")
     private Integer numeroCorredor;
-    @Column(nullable = false)
+    @Column(name ="PRATELEIRA")
     private Integer prateleiras;
+    @Column(name = "PRODUTOS")
     private Set<Produto> produtos = new HashSet<>();
 }

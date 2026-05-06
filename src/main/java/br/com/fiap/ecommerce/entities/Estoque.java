@@ -1,12 +1,8 @@
 package br.com.fiap.ecommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.NotFound;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +13,16 @@ import java.util.UUID;
 public class Estoque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private UUID id;
+    @Column(name = "SETORES")
     private Set<Setor> setores = new HashSet<>();
+    @Column(name = "RESPONSAVEL")
     private Lojista responsavel;
     @NotNull
+    @Column(name = "PESO_TOTAL")
     private Double pesoTotal;
     @NotNull
+    @Column(name = "VALOR_TOTAL")
     private Double valorTotal;
 }
