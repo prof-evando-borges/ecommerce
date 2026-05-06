@@ -15,7 +15,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CLIENTE")
+    @Column(name = "ID")
     private Long id;
 
     @NotBlank(message = "O CPF é obrigatório")
