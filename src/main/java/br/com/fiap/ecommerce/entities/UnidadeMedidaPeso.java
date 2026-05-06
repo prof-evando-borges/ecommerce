@@ -13,8 +13,9 @@ public class UnidadeMedidaPeso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_UNIDADE_MEDIDA_PESO")
     private Integer idUnidadeMedidaPeso;
 
-    @Column(nullable = false)
+    @Column(name = "UNIDADE_MEDIDA_PESO", nullable = false, length = 50)
     private String unidadeMedidaPeso;
 }

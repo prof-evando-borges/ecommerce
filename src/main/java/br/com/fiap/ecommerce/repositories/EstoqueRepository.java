@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstoqueRepository extends JpaRepository<Estoque, Long> {
-    void adicionarProduto(Produto produto);
+    void adicionarProduto(Long estoqueId, Produto produto);
+    void removerDoEstoque(Long estoqueId, Produto produto);
 }
