@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tb_unidade_medida_peso")
+@Table(name = "TB_UNIDADE_MEDIDA_PESO")
 @Getter
 @Setter
 @NoArgsConstructor
