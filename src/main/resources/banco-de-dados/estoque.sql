@@ -1,22 +1,22 @@
-CREATE TABLE estoque (
-    id RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
-    responsavel_id NUMBER,
-    peso_total NUMBER(10,2),
-    valor_total NUMBER(10,2),
+CREATE TABLE ESTOQUE (
+    ID RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
+    RESPONSAVEL_ID NUMBER,
+    PESO_TOTAL NUMBER(10,2),
+    VALOR_TOTAL NUMBER(10,2),
 
-    CONSTRAINT fk_estoque_responsavel
-        FOREIGN KEY (responsavel_id)
-        REFERENCES lojista(id)
+    CONSTRAINT FK_ESTOQUE_RESPONSAVEL
+        FOREIGN KEY (RESPONSAVEL_ID)
+        REFERENCES LOJISTA(ID)
 );
 
-CREATE TABLE setor (
-    id RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
-    nome VARCHAR2(255),
-    numero_corredor NUMBER,
-    prateleiras NUMBER,
-    estoque_id RAW(16),
+CREATE TABLE SETOR (
+    ID RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
+    NOME VARCHAR2(255),
+    NUMERO_CORREDOR NUMBER,
+    PRATELEIRAS NUMBER,
+    ESTOQUE_ID RAW(16),
 
-    CONSTRAINT fk_setor_estoque
-        FOREIGN KEY (estoque_id)
-        REFERENCES estoque(id)
+    CONSTRAINT FK_SETOR_ESTOQUE
+        FOREIGN KEY (ESTOQUE_ID)
+        REFERENCES ESTOQUE(ID)
 );
