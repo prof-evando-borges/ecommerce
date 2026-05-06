@@ -11,7 +11,7 @@ public class Lojista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_LOJISTA")
+    @Column(name = "ID")
     private Long id;
 
     @NotBlank(message = "O CNPJ é obrigatório")
