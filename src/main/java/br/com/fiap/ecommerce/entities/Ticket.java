@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "ticket")
+@Table(name = "TICKET")
 public class Ticket {
 
     @Id
@@ -13,7 +13,7 @@ public class Ticket {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente", nullable = false)
+    @JoinColumn(name = "ID_CLIENTE", nullable = false)
     private Cliente cliente;
 
     @Column(name = "TITULO", nullable = false, length = 100)

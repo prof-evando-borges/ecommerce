@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tb_unidade_medida_tamanho")
+@Table(name = "TB_UNIDADE_MEDIDA_TAMANHO")
 @Getter
 @Setter
 @NoArgsConstructor
