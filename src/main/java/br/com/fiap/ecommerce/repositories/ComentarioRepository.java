@@ -6,9 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
-    List<Comentario> findByProdutoId(Long produtoId);
 
-    List<Comentario> findByClienteId(Long clienteId);
+
+
+
+public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
+
+    // Buscar comentários por avaliação
+    List<Comentario> findByAvaliacao_Id(Long avaliacaoId);
+
 }

@@ -4,77 +4,67 @@ package br.com.fiap.ecommerce.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "AVALIACOES")
+@Table(
+        name = "AVALIACAO",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"cliente_id", "produto_id"})
+)
 public class Avaliacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long idProduto;
-    private Long idCliente;
-    private Long idLoja;
+    @ManyToOne
+    @JoinColumn(name = "ID_PRODUTO", nullable = false)
+    private Produto produto;
 
-    private Integer notaLoja;
+    @ManyToOne
+    @JoinColumn(name = "ID_CLIENTE", nullable = false)
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_LOJISTA", nullable = false)
+    private Loja loja;
+
+    @Column(nullable = false)
     private Integer notaProduto;
 
-    public Avaliacao() {
-    }
+    @Column(nullable = false)
+    private Integer notaLoja;
 
-    public Avaliacao(Long idProduto, Long idCliente, Long idLoja, Integer notaLoja, Integer notaProduto) {
-        this.idProduto = idProduto;
-        this.idCliente = idCliente;
-        this.idLoja = idLoja;
-        this.notaLoja = notaLoja;
+    public Avaliacao() {}
+
+    public Avaliacao(Produto produto, Cliente cliente, Loja loja, Integer notaProduto, Integer notaLoja) {
+        this.produto = produto;
+        this.cliente = cliente;
+        this.loja = loja;
         this.notaProduto = notaProduto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getIdProduto() {
-        return idProduto;
-    }
-
-    public Long getIdCliente() {
-        return idCliente;
-    }
-
-    public Long getIdLoja() {
-        return idLoja;
-    }
-
-    public Integer getNotaLoja() {
-        return notaLoja;
-    }
-
-    public Integer getNotaProduto() {
-        return notaProduto;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setIdProduto(Long idProduto) {
-        this.idProduto = idProduto;
-    }
-
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public void setIdLoja(Long idLoja) {
-        this.idLoja = idLoja;
-    }
-
-    public void setNotaLoja(Integer notaLoja) {
         this.notaLoja = notaLoja;
     }
 
-    public void setNotaProduto(Integer notaProduto) {
-        this.notaProduto = notaProduto;
-    }
+    // GETTERS E SETTERS
+
+    public Long getId() { return id; }
+
+    public Produto getProduto() { return produto; }
+
+    public Cliente getCliente() { return cliente; }
+
+    public Loja getLoja() { return loja; }
+
+    public Integer getNotaProduto() { return notaProduto; }
+
+    public Integer getNotaLoja() { return notaLoja; }
+
+    public void setId(Long id) { this.id = id; }
+
+    public void setProduto(Produto produto) { this.produto = produto; }
+
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
+
+    public void setLoja(Loja loja) { this.loja = loja; }
+
+    public void setNotaProduto(Integer notaProduto) { this.notaProduto = notaProduto; }
+
+    public void setNotaLoja(Integer notaLoja) { this.notaLoja = notaLoja; }
 }
-
