@@ -1,18 +1,24 @@
 package br.com.fiap.ecommerce.entities;
 
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.Data;
 
 @Entity
 @Table(
         name = "AVALIACAO",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"cliente_id", "produto_id"})
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"ID_CLIENTE", "ID_PRODUTO"}
+        )
 )
+@Data
 public class Avaliacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "ID_PRODUTO", nullable = false)
@@ -24,47 +30,15 @@ public class Avaliacao {
 
     @ManyToOne
     @JoinColumn(name = "ID_LOJISTA", nullable = false)
-    private Loja loja;
+    private Lojista lojista;
 
-    @Column(nullable = false)
+    @Min(value = 1, message = "A nota do produto deve ser no mínimo 1")
+    @Max(value = 5, message = "A nota do produto deve ser no máximo 5")
+    @Column(name = "NOTA_PRODUTO", nullable = false)
     private Integer notaProduto;
 
-    @Column(nullable = false)
+    @Min(value = 1, message = "A nota da loja deve ser no mínimo 1")
+    @Max(value = 5, message = "A nota da loja deve ser no máximo 5")
+    @Column(name = "NOTA_LOJA", nullable = false)
     private Integer notaLoja;
-
-    public Avaliacao() {}
-
-    public Avaliacao(Produto produto, Cliente cliente, Loja loja, Integer notaProduto, Integer notaLoja) {
-        this.produto = produto;
-        this.cliente = cliente;
-        this.loja = loja;
-        this.notaProduto = notaProduto;
-        this.notaLoja = notaLoja;
-    }
-
-    // GETTERS E SETTERS
-
-    public Long getId() { return id; }
-
-    public Produto getProduto() { return produto; }
-
-    public Cliente getCliente() { return cliente; }
-
-    public Loja getLoja() { return loja; }
-
-    public Integer getNotaProduto() { return notaProduto; }
-
-    public Integer getNotaLoja() { return notaLoja; }
-
-    public void setId(Long id) { this.id = id; }
-
-    public void setProduto(Produto produto) { this.produto = produto; }
-
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
-
-    public void setLoja(Loja loja) { this.loja = loja; }
-
-    public void setNotaProduto(Integer notaProduto) { this.notaProduto = notaProduto; }
-
-    public void setNotaLoja(Integer notaLoja) { this.notaLoja = notaLoja; }
 }
