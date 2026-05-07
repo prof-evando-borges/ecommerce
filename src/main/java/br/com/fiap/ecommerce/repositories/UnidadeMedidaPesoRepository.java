@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UnidadeMedidaPesoRepository extends JpaRepository<UnidadeMedidaPeso, Integer> {
+public interface UnidadeMedidaPesoRepository extends JpaRepository<UnidadeMedidaPeso, String> {
 
     Optional<UnidadeMedidaPeso> findByUnidadeMedidaPeso(String unidadeMedidaPeso);
 }
