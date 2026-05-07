@@ -13,7 +13,7 @@ public class Comentario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    private String id;
 
     @NotBlank(message = "O comentário é obrigatório")
     @Size(max = 500, message = "O comentário deve ter no máximo 500 caracteres")

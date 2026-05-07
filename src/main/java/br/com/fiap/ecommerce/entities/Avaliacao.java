@@ -18,7 +18,7 @@ public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "ID_PRODUTO", nullable = false)
