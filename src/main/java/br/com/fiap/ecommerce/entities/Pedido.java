@@ -15,12 +15,18 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PEDIDO")
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name = "USUARIO_ID", nullable = false)
-    private int usuarioId;
+    @Column(name = "ID_CLIENTE", nullable = false)
+    private int idCliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
-    private int numeroPedido;
+    private number numeroPedido;
+
+    @Column(name = "DATA_ENTREGA", nullable = false)
+    private date dataEntrega;
+
+    @Column(name = "VALOR_FINAL", nullable = false)
+    private double valorFinal;
 }
