@@ -2,25 +2,27 @@ package br.com.fiap.ecommerce.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Data
-@Getter
-@Table(name = "ESTOQUE")
 public class Estoque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ESTOQUE")
-    private Long id;
-
-    @Column(name = "NOME_SETOR", nullable = false, length = 80)
-    private String nomeSetor;
-
-    @Column(name = "PRODUTOS")
-    @OneToMany(mappedBy = "estoque")
-    private Set<Produto> produtos = new HashSet<>();
+    @Column(name = "ID")
+    private UUID id;
+    @Column(name = "SETORES")
+    private Set<Setor> setores = new HashSet<>();
+    @Column(name = "RESPONSAVEL")
+    private Lojista responsavel;
+    @NotNull
+    @Column(name = "PESO_TOTAL")
+    private Double pesoTotal;
+    @NotNull
+    @Column(name = "VALOR_TOTAL")
+    private Double valorTotal;
 }
