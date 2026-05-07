@@ -1,22 +1,40 @@
 package br.com.fiap.ecommerce.entities;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "CARTAO")
 public class Cartao {
+
+    // 1º Atributo: ID como UUID (VARCHAR2 no banco)
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ID_CARTAO", updatable = false, nullable = false, length = 36)
     private String id;
-    private String numeroMascarado;
-    private String titular;
 
-    public Cartao(String id, String numeroMascarado, String titular) {
-        this.id = id;
-        this.numeroMascarado = numeroMascarado;
-        this.titular = titular;
-    }
+    // 2º Atributo
+    @NotBlank(message = "O nome do titular é obrigatório")
+    @Size(max = 100, message = "O nome deve ter no máximo 100 caracteres")
+    @Column(name = "NOME_TITULAR", nullable = false, length = 100)
+    private String nomeTitular;
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    // 3º Atributo
+    @NotBlank(message = "O número do cartão é obrigatório")
+    @Column(name = "NUMERO", nullable = false, length = 16)
+    private String numero;
 
-    public String getNumeroMascarado() { return numeroMascarado; }
-    public void setNumeroMascarado(String numeroMascarado) { this.numeroMascarado = numeroMascarado; }
+    // 4º Atributo
+    @NotBlank(message = "O CVV é obrigatório")
+    @Column(name = "CVV", nullable = false, length = 3)
+    private String cvv;
 
-    public String getTitular() { return titular; }
-    public void setTitular(String titular) { this.titular = titular; }
+    // 5º Atributo
+    @NotNull(message = "A data de criação deve ser válida")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATA_CRIACAO", updatable = false)
+    private Date dataCriacao;
+
+    // Lembre-se de gerar os Getters e Setters
 }
