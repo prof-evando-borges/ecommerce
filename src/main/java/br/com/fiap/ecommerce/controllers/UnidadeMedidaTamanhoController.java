@@ -17,7 +17,7 @@ public class UnidadeMedidaTamanhoController {
     }
 
     @GetMapping("/{id}")
-    public UnidadeMedidaTamanho buscarPorId(@PathVariable Integer id) {
+    public UnidadeMedidaTamanho buscarPorId(@PathVariable String id) {
         return unidadeMedidaTamanhoService.buscarPorId(id);
     }
 
@@ -37,7 +37,7 @@ public class UnidadeMedidaTamanhoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Integer id) {
+    public void deletar(@PathVariable String id) {
         unidadeMedidaTamanhoService.deletar(id);
     }
 }

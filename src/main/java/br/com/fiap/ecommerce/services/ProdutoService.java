@@ -43,13 +43,13 @@ public class ProdutoService {
         return repository.findAll();
     }
 
-    public Produto buscarPorId(Long id) {
+    public Produto buscarPorId(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado para o ID: " + id));
     }
 
     @Transactional
-    public void deletar(Long id) {
+    public void deletar(String id) {
         Produto produto = buscarPorId(id);
         repository.delete(produto);
     }

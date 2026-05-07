@@ -12,9 +12,9 @@ import lombok.*;
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
-    private Long id;
+    private String id;
 
     @Column(name = "NOME_PRODUTO", nullable = false, length = 150)
     private String nomeProduto;

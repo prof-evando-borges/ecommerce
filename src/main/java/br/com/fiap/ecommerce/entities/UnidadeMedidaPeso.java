@@ -12,9 +12,9 @@ import lombok.*;
 public class UnidadeMedidaPeso {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
-    private Integer id;
+    private String id;
 
     @Column(name = "UNIDADE_MEDIDA_PESO", nullable = false, length = 50)
     private String unidadeMedidaPeso;

@@ -17,7 +17,7 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public Categoria buscarPorId(@PathVariable Integer id) {
+    public Categoria buscarPorId(@PathVariable String id) {
         return categoriaService.buscarPorId(id);
     }
 
@@ -37,7 +37,7 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Integer id) {
+    public void deletar(@PathVariable String id) {
         categoriaService.deletar(id);
     }
 }

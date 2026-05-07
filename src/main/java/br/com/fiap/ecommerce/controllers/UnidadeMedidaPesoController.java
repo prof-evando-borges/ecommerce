@@ -17,7 +17,7 @@ public class UnidadeMedidaPesoController {
     }
 
     @GetMapping("/{id}")
-    public UnidadeMedidaPeso buscarPorId(@PathVariable Integer id) {
+    public UnidadeMedidaPeso buscarPorId(@PathVariable String id) {
         return unidadeMedidaPesoService.buscarPorId(id);
     }
 
@@ -37,7 +37,7 @@ public class UnidadeMedidaPesoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Integer id) {
+    public void deletar(@PathVariable String id) {
         unidadeMedidaPesoService.deletar(id);
     }
 }

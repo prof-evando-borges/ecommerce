@@ -33,7 +33,7 @@ public class CategoriaService {
         return repository.findAll();
     }
 
-    public Categoria buscarPorId(Integer id) {
+    public Categoria buscarPorId(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada para o ID: " + id));
     }
@@ -44,7 +44,7 @@ public class CategoriaService {
     }
 
     @Transactional
-    public void deletar(Integer id) {
+    public void deletar(String id) {
         Categoria categoria = buscarPorId(id);
         repository.delete(categoria);
     }
