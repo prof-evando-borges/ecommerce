@@ -16,10 +16,10 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    private String id;
 
     @Column(name = "ID_CLIENTE", nullable = false)
-    private int idCliente;
+    private String idCliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
     private number numeroPedido;
