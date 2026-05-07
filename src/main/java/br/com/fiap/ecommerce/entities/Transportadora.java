@@ -2,6 +2,7 @@ package br.com.fiap.ecommerce.entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "TRANSPORTADORA")
@@ -11,18 +12,23 @@ public class Transportadora {
     @Column(name = "ID_TRANSPORTADORA", nullable = false)
     private Long id;
 
+    @NotBlank(message = "O nome é obrigatório")
     @Column(name = "NOME", nullable = false, length = 50)
     private String nome;
 
+    @NotNull(message = "O peso minimo deve ser informado")
     @Column(name = "PESO_MIN", nullable = false)
     private Double pesoMin;
 
+    @NotNull(message = "O peso maximo deve ser informado")
     @Column(name = "PESO_MAX", nullable = false)
     private Double pesoMax;
 
+    @NotNull(message = "O Valor deve ser informado")
     @Column(name = "VALOR_BASE", nullable = false)
     private Double valorBase;
 
+    @NotNull(message = "O prazo deve ser informado")
     @Column(name = "PRAZO_DIAS", nullable = false)
     private int prazoDias;
 

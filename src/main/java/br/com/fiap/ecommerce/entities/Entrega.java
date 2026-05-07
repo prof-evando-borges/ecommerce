@@ -2,6 +2,7 @@ package br.com.fiap.ecommerce.entities;
 
 import br.com.fiap.ecommerce.models.StatusEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name ="ENTREGA")
@@ -11,18 +12,23 @@ public class Entrega {
     @Column(name = "ID_ENTREGA", nullable = false)
     private Long id;
 
+    @NotBlank(message = "O status deve ser informado")
     @Column(name = "STATUS", nullable = false)
     private StatusEnum status;
 
+    @NotNull(message = "O valor do frete deve ser informado")
     @Column(name = "VALOR_FRETE", nullable = false)
     private Double valorFrete;
 
+    @NotNull(message = "O prazo deve ser informado")
     @Column(name = "PRAZO_DIAS", nullable = false)
     private int prazoDias;
 
+    @NotBlank(message = "O ID do pedido deve ser informado")
     @Column(name = "ID_PEDIDO", nullable = false)
     private int pedidoId;
 
+    @NotBlank(message = "O ID da transportadora deve ser informado")
     @Column(name = "ID_TRANSPORTADORA", nullable = false)
     private int transportadoraId;
 

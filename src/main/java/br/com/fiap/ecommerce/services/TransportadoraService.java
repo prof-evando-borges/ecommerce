@@ -23,8 +23,13 @@ public class TransportadoraService {
         return list;
     }
 
-    public void buscarPorId(Long Id){
+    public Transportadora buscarPorId(Long Id){
         Transportadora obj = repository.findById(Id).orElseThrow(() -> new TransportadoraException("Transportadora não encontrada"));
-        repository.save(obj);
+        return obj;
+    }
+
+    public void deleteById(Long id){
+        Transportadora obj = repository.findById(id).orElseThrow(() -> new TransportadoraException("Transportadora não encontrada"));
+        repository.deleteById(obj.getId());
     }
 }
