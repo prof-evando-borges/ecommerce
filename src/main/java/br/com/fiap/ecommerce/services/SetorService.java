@@ -26,7 +26,7 @@ public class SetorService {
         setorRepository.save(setor);
     }
 
-    public void removerSetor(Setor setor){
-        setorRepository.deleteById(setor.getId());
+    public void removerSetor(UUID id){
+        setorRepository.deleteById(id);
     }
 }
