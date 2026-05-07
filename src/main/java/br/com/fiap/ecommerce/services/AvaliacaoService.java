@@ -60,13 +60,13 @@ public class AvaliacaoService {
                 .orElseThrow(() ->
                         new RuntimeException("Cliente não encontrado"));
 
-        Lojista loja = lojistaRepository.findById(lojaId)
+        Lojista lojista = lojistaRepository.findById(lojaId)
                 .orElseThrow(() ->
                         new RuntimeException("Loja não encontrada"));
 
         avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);
-        avaliacao.setLoja(loja);
+        avaliacao.setLoja(lojista);
 
         return repository.save(avaliacao);
     }
