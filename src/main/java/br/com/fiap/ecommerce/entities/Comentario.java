@@ -1,7 +1,8 @@
 package br.com.fiap.ecommerce.entities;
 
-import br.com.fiap.ecommerce.entities.Avaliacao;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "COMENTARIOS")
@@ -11,32 +12,44 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "O comentário é obrigatório")
+    @Size(max = 500, message = "O comentário deve ter no máximo 500 caracteres")
     @Column(nullable = false, length = 500)
     private String comentario;
 
     @OneToOne
-    @JoinColumn(name = "AVALIACOES", nullable = false)
+    @JoinColumn(name = "ID_AVALIACAO", nullable = false)
     private Avaliacao avaliacao;
 
-    public Comentario() {}
+    public Comentario() {
+    }
 
     public Comentario(String comentario, Avaliacao avaliacao) {
         this.comentario = comentario;
         this.avaliacao = avaliacao;
     }
 
-    // GETTERS E SETTERS
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId() { return id; }
+    public String getComentario() {
+        return comentario;
+    }
 
-    public String getComentario() { return comentario; }
+    public Avaliacao getAvaliacao() {
+        return avaliacao;
+    }
 
-    public Avaliacao getAvaliacao() { return avaliacao; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 
-    public void setComentario(String comentario) { this.comentario = comentario; }
-
-    public void setAvaliacao(Avaliacao avaliacao) { this.avaliacao = avaliacao; }
-}
+    public void setAvaliacao(Avaliacao avaliacao) {
+        this.avaliacao = avaliacao;
+    }
 }
