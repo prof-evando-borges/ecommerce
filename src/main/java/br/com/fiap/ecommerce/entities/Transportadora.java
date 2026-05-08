@@ -12,7 +12,7 @@ public class Transportadora {
     @Column(name = "ID_TRANSPORTADORA", nullable = false)
     private Long id;
 
-    @NotBlank(message = "O nome é obrigatório")
+    @NotBlank(message = "O nome deve ser preenchido")
     @Column(name = "NOME", nullable = false, length = 50)
     private String nome;
 

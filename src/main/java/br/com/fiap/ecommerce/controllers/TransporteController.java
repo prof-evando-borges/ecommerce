@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RestController(value = "/transportes")
+@RestController(value = "/api/v1/transportes")
 public class TransporteController {
 
     @Autowired

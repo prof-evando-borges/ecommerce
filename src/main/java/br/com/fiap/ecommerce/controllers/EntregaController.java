@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RestController(value = "/entregas")
+@RestController(value = "/api/v1/entregas")
 public class EntregaController {
 
     @Autowired
