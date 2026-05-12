@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "PEDIDO")
 @Getter
@@ -22,10 +24,10 @@ public class Pedido {
     private String idCliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
-    private number numeroPedido;
+    private Integer numeroPedido;
 
     @Column(name = "DATA_ENTREGA", nullable = false)
-    private date dataEntrega;
+    private Date dataEntrega;
 
     @Column(name = "VALOR_FINAL", nullable = false)
     private double valorFinal;

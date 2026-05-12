@@ -22,7 +22,7 @@ public class CategoriaService {
         }
 
         Optional<Categoria> existente = repository.findByNomeCategoria(categoria.getNomeCategoria());
-        if (existente.isPresent() && !existente.get().getIdCategoria().equals(categoria.getIdCategoria())) {
+        if (existente.isPresent() && !existente.get().getId().equals(categoria.getId())) {
             throw new IllegalArgumentException("Já existe uma categoria cadastrada com este nome.");
         }
 

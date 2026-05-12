@@ -26,13 +26,13 @@ public class UnidadeMedidaTamanhoService {
         return repository.findAll();
     }
 
-    public UnidadeMedidaTamanho buscarPorId(Integer id) {
+    public UnidadeMedidaTamanho buscarPorId(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Unidade de medida de tamanho não encontrada."));
     }
 
     @Transactional
-    public void deletar(Integer id) {
+    public void deletar(String id) {
         UnidadeMedidaTamanho unidade = buscarPorId(id);
         repository.delete(unidade);
     }

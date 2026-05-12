@@ -25,14 +25,14 @@ public class ProdutoService {
         if (produto.getPreco() == null || produto.getPreco() <= 0) {
             throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
         }
-        if (produto.getCategoria() == null || produto.getCategoria().getIdCategoria() == null) {
+        if (produto.getCategoria() == null || produto.getCategoria().getId() == null) {
             throw new IllegalArgumentException("O produto deve estar associado a uma categoria válida.");
         }
 
-        categoriaService.buscarPorId(produto.getCategoria().getIdCategoria());
+        categoriaService.buscarPorId(produto.getCategoria().getId());
 
         Optional<Produto> existente = repository.findByNomeProduto(produto.getNomeProduto());
-        if (existente.isPresent() && !existente.get().getIdProduto().equals(produto.getIdProduto())) {
+        if (existente.isPresent() && !existente.get().getId().equals(produto.getId())) {
             throw new IllegalArgumentException("Já existe um produto com este nome.");
         }
 
