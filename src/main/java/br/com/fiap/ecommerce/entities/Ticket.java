@@ -1,30 +1,43 @@
 package br.com.fiap.ecommerce.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "TICKET")
+@Table(name = "TB_TICKET")
+@Data
 public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_TICKET")
+    @Column(name = "ID")
     private Long id;
 
+    @NotNull(message = "O cliente é obrigatório")
     @ManyToOne
     @JoinColumn(name = "ID_CLIENTE", nullable = false)
     private Cliente cliente;
 
+    @NotBlank(message = "O título é obrigatório")
+    @Size(max = 100, message = "O título deve ter no máximo 100 caracteres")
     @Column(name = "TITULO", nullable = false, length = 100)
     private String titulo;
 
-    @Column(name = "DESCRICAO", nullable = false, length = 500)
+    @Size(max = 500, message = "A descrição deve ter no máximo 500 caracteres")
+    @Column(name = "DESCRICAO", length = 500)
     private String descricao;
 
+    @NotBlank(message = "O status é obrigatório")
+    @Size(max = 50, message = "O status deve ter no máximo 50 caracteres")
     @Column(name = "STATUS", nullable = false, length = 50)
     private String status;
 
+    @NotBlank(message = "A prioridade é obrigatória")
+    @Size(max = 50, message = "A prioridade deve ter no máximo 50 caracteres")
     @Column(name = "PRIORIDADE", nullable = false, length = 50)
     private String prioridade;
 
@@ -33,24 +46,4 @@ public class Ticket {
 
     @Column(name = "DATA_ATUALIZACAO")
     private LocalDateTime dataAtualizacao;
-
-    // Getters
-    public Long getId() { return id; }
-    public Cliente getCliente() { return cliente; }
-    public String getTitulo() { return titulo; }
-    public String getDescricao() { return descricao; }
-    public String getStatus() { return status; }
-    public String getPrioridade() { return prioridade; }
-    public LocalDateTime getDataCriacao() { return dataCriacao; }
-    public LocalDateTime getDataAtualizacao() { return dataAtualizacao; }
-
-    // Setters
-    public void setId(Long id) { this.id = id; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
-    public void setStatus(String status) { this.status = status; }
-    public void setPrioridade(String prioridade) { this.prioridade = prioridade; }
-    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) { this.dataAtualizacao = dataAtualizacao; }
 }
