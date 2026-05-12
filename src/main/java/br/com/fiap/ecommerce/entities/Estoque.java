@@ -12,12 +12,13 @@ import java.util.UUID;
 @Data
 public class Estoque {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
     private UUID id;
     @Column(name = "SETORES")
     private Set<Setor> setores = new HashSet<>();
-    @Column(name = "RESPONSAVEL")
+    @ManyToOne
+    @JoinColumn(name = "ID_RESPONSAVEL")
     private Lojista responsavel;
     @NotNull
     @Column(name = "PESO_TOTAL")
