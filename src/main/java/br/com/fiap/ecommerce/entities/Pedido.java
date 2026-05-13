@@ -3,8 +3,9 @@ package br.com.fiap.ecommerce.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "PEDIDO")
@@ -16,10 +17,10 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private String id;
+    private UUID id;
 
-    @Column(name = "ID_CLIENTE", nullable = false)
-    private String idCliente;
+    @Column(name = "CLIENTE", nullable = false)
+    private String Cliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
     private Number numeroPedido;
@@ -29,4 +30,6 @@ public class Pedido {
 
     @Column(name = "VALOR_FINAL", nullable = false)
     private double valorFinal;
+
+    }
 }
