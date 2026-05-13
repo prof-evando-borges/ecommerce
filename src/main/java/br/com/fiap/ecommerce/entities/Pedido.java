@@ -22,10 +22,10 @@ public class Pedido {
     private String idCliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
-    private number numeroPedido;
+    private Number numeroPedido;
 
     @Column(name = "DATA_ENTREGA", nullable = false)
-    private date dataEntrega;
+    private Data dataEntrega;
 
     @Column(name = "VALOR_FINAL", nullable = false)
     private double valorFinal;
