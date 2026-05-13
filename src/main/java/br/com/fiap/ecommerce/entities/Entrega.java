@@ -3,14 +3,18 @@ package br.com.fiap.ecommerce.entities;
 import br.com.fiap.ecommerce.models.StatusEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Data;
+
+import java.util.UUID;
 
 @Entity
-@Table(name ="ENTREGA")
+@Table(name ="TB_ENTREGA")
+@Data
 public class Entrega {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_ENTREGA", nullable = false)
-    private Long id;
+    @Column(name = "ID", nullable = false)
+    private UUID id;
 
     @NotBlank(message = "O status deve ser informado")
     @Column(name = "STATUS", nullable = false)
@@ -32,11 +36,11 @@ public class Entrega {
 
     @NotBlank(message = "O ID da transportadora deve ser informado")
     @Column(name = "ID_TRANSPORTADORA", nullable = false)
-    private int transportadoraId;
+    private UUID transportadoraId;
 
     public Entrega(){}
 
-    public Entrega(StatusEnum status, Double valorFrete, int prazoDias, int pedidoId, int transportadoraId) {
+    public Entrega(StatusEnum status, Double valorFrete, int prazoDias, int pedidoId, UUID transportadoraId) {
         this.status = status;
         this.valorFrete = valorFrete;
         this.prazoDias = prazoDias;
@@ -44,48 +48,5 @@ public class Entrega {
         this.transportadoraId = transportadoraId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public Enum getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnum status) {
-        this.status = status;
-    }
-
-    public Double getValorFrete() {
-        return valorFrete;
-    }
-
-    public void setValorFrete(Double valorFrete) {
-        this.valorFrete = valorFrete;
-    }
-
-    public int getPrazoDias() {
-        return prazoDias;
-    }
-
-    public void setPrazoDias(int prazoDias) {
-        this.prazoDias = prazoDias;
-    }
-
-    public int getPedidoId() {
-        return pedidoId;
-    }
-
-    public void setPedidoId(int pedidoId) {
-        this.pedidoId = pedidoId;
-    }
-
-    public int getTransportadoraId() {
-        return transportadoraId;
-    }
-
-    public void setTransportadoraId(int transportadoraId) {
-        this.transportadoraId = transportadoraId;
-    }
 
 }

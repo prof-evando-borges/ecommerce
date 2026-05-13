@@ -3,14 +3,18 @@ package br.com.fiap.ecommerce.entities;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Data;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "TRANSPORTADORA")
+@Table(name = "TB_TRANSPORTADORA")
+@Data
 public class Transportadora {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_TRANSPORTADORA", nullable = false)
-    private Long id;
+    @Column(name = "ID", nullable = false)
+    private UUID id;
 
     @NotBlank(message = "O nome deve ser preenchido")
     @Column(name = "NOME", nullable = false, length = 50)
@@ -42,50 +46,6 @@ public class Transportadora {
         this.pesoMin = pesoMin;
         this.pesoMax = pesoMax;
         this.valorBase = valorBase;
-        this.prazoDias = prazoDias;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Double getPesoMin() {
-        return pesoMin;
-    }
-
-    public void setPesoMin(Double pesoMin) {
-        this.pesoMin = pesoMin;
-    }
-
-    public Double getPesoMax() {
-        return pesoMax;
-    }
-
-    public void setPesoMax(Double pesoMax) {
-        this.pesoMax = pesoMax;
-    }
-
-    public Double getValorBase() {
-        return valorBase;
-    }
-
-    public void setValorBase(Double valorBase) {
-        this.valorBase = valorBase;
-    }
-
-    public int getPrazoDias() {
-        return prazoDias;
-    }
-
-    public void setPrazoDias(int prazoDias) {
         this.prazoDias = prazoDias;
     }
 

@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
-@RestController(value = "/api/v1/transportes")
+@RestController(value = "/api/v1/transportadoras")
 public class TransporteController {
 
     @Autowired
@@ -24,26 +25,26 @@ public class TransporteController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Transportadora> findById(@PathVariable Long id){
+    public ResponseEntity<Transportadora> findById(@PathVariable UUID id){
         Transportadora obj = service.buscarPorId(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteById(@PathVariable UUID id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/criar-transportadora")
+    @PostMapping()
     public ResponseEntity<Transportadora> criarTransportadora(@RequestBody @Valid Transportadora obj){
-        service.salvar(obj);
+        service.criar(obj);
         return ResponseEntity.ok().body(obj);
     }
 
-    @PostMapping(value = "/atualizar-transportadora")
-    public ResponseEntity<Transportadora> atualizarTransportadora(@RequestBody @Valid Transportadora obj){
-        service.salvar(obj);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Transportadora> atualizarTransportadora(@PathVariable UUID id,@RequestBody @Valid Transportadora obj){
+        service.atualizar(obj, id);
         return ResponseEntity.ok().body(obj);
     }
 
