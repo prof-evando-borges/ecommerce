@@ -32,7 +32,7 @@ public class ComentarioService {
     }
 
     // BUSCAR POR AVALIAÇÃO
-    public List<Comentario> buscarPorAvaliacao(Long avaliacaoId) {
+    public List<Comentario> buscarPorAvaliacao(UUID avaliacaoId) {
         return repository.findByAvaliacao_Id(avaliacaoId);
     }
 

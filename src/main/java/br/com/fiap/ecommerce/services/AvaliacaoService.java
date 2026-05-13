@@ -42,9 +42,9 @@ public class AvaliacaoService {
 
     public Avaliacao salvar(Avaliacao avaliacao) {
 
-        Long clienteId = avaliacao.getCliente().getId();
+        UUID clienteId = avaliacao.getCliente().getId();
         String produtoId = avaliacao.getProduto().getId();
-        Long lojaId = avaliacao.getLojista().getId();
+        UUID lojaId = avaliacao.getLojista().getId();
 
         repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
                 .ifPresent(a -> {

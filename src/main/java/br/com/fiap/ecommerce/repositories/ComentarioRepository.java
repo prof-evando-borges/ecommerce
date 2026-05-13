@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface ComentarioRepository extends JpaRepository<Comentario, UUID> {
 
     // Buscar comentários por avaliação
-    List<Comentario> findByAvaliacao_Id(Long avaliacaoId);
+    List<Comentario> findByAvaliacao_Id(UUID avaliacaoId);
 
 }
