@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.ClienteService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/clientes")
@@ -17,7 +18,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public Cliente buscarPorId(@PathVariable Long id) {
+    public Cliente buscarPorId(@PathVariable UUID id) {
         return clienteService.buscarPorId(id);
     }
 
@@ -37,7 +38,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletarConta(@PathVariable Long id) {
+    public void deletarConta(@PathVariable UUID id) {
         clienteService.deletarConta(id);
     }
 
