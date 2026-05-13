@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "LOJISTA")
+@Table(name = "TB_LOJISTA")
 @Data
 public class Lojista {
 

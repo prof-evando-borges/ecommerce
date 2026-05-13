@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name = "CLIENTE")
+@Table(name = "TB_CLIENTE")
 @Data
 public class Cliente {
 
