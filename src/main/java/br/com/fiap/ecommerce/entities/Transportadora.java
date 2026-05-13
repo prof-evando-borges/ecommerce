@@ -2,34 +2,40 @@ package br.com.fiap.ecommerce.entities;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
+import lombok.Data;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "TRANSPORTADORA")
+@Table(name = "TB_TRANSPORTADORA")
+@Data
 public class Transportadora {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_TRANSPORTADORA", nullable = false)
-    private Long id;
+    @Column(name = "ID", nullable = false)
+    private UUID id;
 
-    @NotBlank(message = "O nome tem que ser preenchido")
+    @NotBlank(message = "O nome deve ser preenchido")
     @Column(name = "NOME", nullable = false, length = 50)
     private String nome;
 
     @NotNull(message = "O peso minimo deve ser informado")
+    @DecimalMin(value = "0.1", message = "O peso do produto deve se ao menos 0.1kg")
     @Column(name = "PESO_MIN", nullable = false)
     private Double pesoMin;
 
-    @NotNull(message = "O peso máximo deve ser informado")
+    @NotNull(message = "O peso maximo deve ser informado")
+    @Max(value = 150, message = "O peso do produto deve ser no maximo 150kg")
     @Column(name = "PESO_MAX", nullable = false)
     private Double pesoMax;
 
-    @NotNull(message = "O valor base deve ser informado")
+    @NotNull(message = "O Valor deve ser informado")
     @Column(name = "VALOR_BASE", nullable = false)
     private Double valorBase;
 
     @NotNull(message = "O prazo deve ser informado")
+    @Min(value = 1, message = "O prazo de dias deve ser ao menos 1 dia")
     @Column(name = "PRAZO_DIAS", nullable = false)
     private int prazoDias;
 
@@ -40,50 +46,6 @@ public class Transportadora {
         this.pesoMin = pesoMin;
         this.pesoMax = pesoMax;
         this.valorBase = valorBase;
-        this.prazoDias = prazoDias;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Double getPesoMin() {
-        return pesoMin;
-    }
-
-    public void setPesoMin(Double pesoMin) {
-        this.pesoMin = pesoMin;
-    }
-
-    public Double getPesoMax() {
-        return pesoMax;
-    }
-
-    public void setPesoMax(Double pesoMax) {
-        this.pesoMax = pesoMax;
-    }
-
-    public Double getValorBase() {
-        return valorBase;
-    }
-
-    public void setValorBase(Double valorBase) {
-        this.valorBase = valorBase;
-    }
-
-    public int getPrazoDias() {
-        return prazoDias;
-    }
-
-    public void setPrazoDias(int prazoDias) {
         this.prazoDias = prazoDias;
     }
 

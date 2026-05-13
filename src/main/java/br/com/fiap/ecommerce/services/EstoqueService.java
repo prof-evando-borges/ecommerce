@@ -36,7 +36,7 @@ public class EstoqueService {
 
     public Estoque adicionarEstoque(Estoque estoque) {
         if (estoque.getIdLojista() == null) {
-            Long idLojista = estoque.getIdLojista().getId();
+            UUID idLojista = estoque.getIdLojista().getId();
             Lojista lojista = lojistaRepository.findById(idLojista)
                     .orElseThrow(() ->
                             new RuntimeException("Lojista não encontrado"));
