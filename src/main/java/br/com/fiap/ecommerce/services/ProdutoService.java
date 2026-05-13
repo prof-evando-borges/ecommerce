@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -43,13 +44,13 @@ public class ProdutoService {
         return repository.findAll();
     }
 
-    public Produto buscarPorId(String id) {
+    public Produto buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado para o ID: " + id));
     }
 
     @Transactional
-    public void deletar(String id) {
+    public void deletar(UUID id) {
         Produto produto = buscarPorId(id);
         repository.delete(produto);
     }
