@@ -1,8 +1,15 @@
 package br.com.fiap.ecommerce.services;
 
-
 import br.com.fiap.ecommerce.entities.Avaliacao;
+import br.com.fiap.ecommerce.entities.Cliente;
+import br.com.fiap.ecommerce.entities.Lojista;
+import br.com.fiap.ecommerce.entities.Produto;
 import br.com.fiap.ecommerce.repositories.AvaliacaoRepository;
+import br.com.fiap.ecommerce.repositories.ClienteRepository;
+import br.com.fiap.ecommerce.repositories.LojistaRepository;
+import br.com.fiap.ecommerce.repositories.ProdutoRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,17 +17,66 @@ import java.util.List;
 @Service
 public class AvaliacaoService {
 
-    private final AvaliacaoRepository repository;
+    @Autowired
+    private AvaliacaoRepository repository;
 
-    public AvaliacaoService(AvaliacaoRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
-    public Avaliacao criar(Avaliacao avaliacao) {
-        return repository.save(avaliacao);
-    }
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private LojistaRepository lojistaRepository;
 
     public List<Avaliacao> listar() {
         return repository.findAll();
+    }
+
+    public Avaliacao buscarPorId(String id) {
+        return repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Avaliação não encontrada"));
+    }
+
+    public Avaliacao salvar(Avaliacao avaliacao) {
+
+        Long clienteId = avaliacao.getCliente().getId();
+        String produtoId = avaliacao.getProduto().getId();
+        Long lojaId = avaliacao.getLojista().getId();
+
+        repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
+                .ifPresent(a -> {
+                    throw new RuntimeException(
+                            "Cliente já avaliou esse produto"
+                    );
+                });
+
+        Produto produto = produtoRepository.findById(produtoId)
+                .orElseThrow(() ->
+                        new RuntimeException("Produto não encontrado"));
+
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() ->
+                        new RuntimeException("Cliente não encontrado"));
+
+        Lojista lojista = lojistaRepository.findById(lojaId)
+                .orElseThrow(() ->
+                        new RuntimeException("Loja não encontrada"));
+
+        avaliacao.setProduto(produto);
+        avaliacao.setCliente(cliente);
+        avaliacao.setLojista(lojista);
+
+        return repository.save(avaliacao);
+    }
+
+    public void deletar(String id) {
+
+        Avaliacao avaliacao = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Avaliação não encontrada"));
+
+        repository.delete(avaliacao);
     }
 }

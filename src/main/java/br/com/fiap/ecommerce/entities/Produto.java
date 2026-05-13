@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tb_produto")
+@Table(name = "TB_PRODUTO")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,9 +12,9 @@ import lombok.*;
 public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PRODUTO")
-    private Long idProduto;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ID")
+    private String id;
 
     @Column(name = "NOME_PRODUTO", nullable = false, length = 150)
     private String nomeProduto;

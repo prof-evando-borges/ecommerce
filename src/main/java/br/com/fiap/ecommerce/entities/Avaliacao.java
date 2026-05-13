@@ -1,79 +1,44 @@
 package br.com.fiap.ecommerce.entities;
 
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import lombok.Data;
 
 @Entity
-@Table(name = "avaliacoes")
+@Table(
+        name = "AVALIACAO",
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"ID_CLIENTE", "ID_PRODUTO"}
+        )
+)
+@Data
 public class Avaliacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ID")
+    private String id;
 
-    private Long idProduto;
-    private Long idCliente;
-    private Long idLoja;
+    @ManyToOne
+    @JoinColumn(name = "ID_PRODUTO", nullable = false)
+    private Produto produto;
 
-    private Integer notaLoja;
+    @ManyToOne
+    @JoinColumn(name = "ID_CLIENTE", nullable = false)
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_LOJISTA", nullable = false)
+    private Lojista lojista;
+
+    @Min(value = 1, message = "A nota do produto deve ser no mínimo 1")
+    @Max(value = 5, message = "A nota do produto deve ser no máximo 5")
+    @Column(name = "NOTA_PRODUTO", nullable = false)
     private Integer notaProduto;
 
-    public Avaliacao() {
-    }
-
-    public Avaliacao(Long idProduto, Long idCliente, Long idLoja, Integer notaLoja, Integer notaProduto) {
-        this.idProduto = idProduto;
-        this.idCliente = idCliente;
-        this.idLoja = idLoja;
-        this.notaLoja = notaLoja;
-        this.notaProduto = notaProduto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getIdProduto() {
-        return idProduto;
-    }
-
-    public Long getIdCliente() {
-        return idCliente;
-    }
-
-    public Long getIdLoja() {
-        return idLoja;
-    }
-
-    public Integer getNotaLoja() {
-        return notaLoja;
-    }
-
-    public Integer getNotaProduto() {
-        return notaProduto;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setIdProduto(Long idProduto) {
-        this.idProduto = idProduto;
-    }
-
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public void setIdLoja(Long idLoja) {
-        this.idLoja = idLoja;
-    }
-
-    public void setNotaLoja(Integer notaLoja) {
-        this.notaLoja = notaLoja;
-    }
-
-    public void setNotaProduto(Integer notaProduto) {
-        this.notaProduto = notaProduto;
-    }
+    @Min(value = 1, message = "A nota da loja deve ser no mínimo 1")
+    @Max(value = 5, message = "A nota da loja deve ser no máximo 5")
+    @Column(name = "NOTA_LOJA", nullable = false)
+    private Integer notaLoja;
 }

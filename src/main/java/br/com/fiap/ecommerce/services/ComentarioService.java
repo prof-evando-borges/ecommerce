@@ -1,11 +1,11 @@
 package br.com.fiap.ecommerce.services;
 
-import br.com.fiap.ecommerce.entities.Cliente;
+import br.com.fiap.ecommerce.entities.Avaliacao;
 import br.com.fiap.ecommerce.entities.Comentario;
-import br.com.fiap.ecommerce.entities.Produto;
-import br.com.fiap.ecommerce.repository.ClienteRepository;
-import br.com.fiap.ecommerce.repository.ComentarioRepository;
-import br.com.fiap.ecommerce.repository.ProdutoRepository;
+import br.com.fiap.ecommerce.repositories.AvaliacaoRepository;
+import br.com.fiap.ecommerce.repositories.ComentarioRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,44 +13,43 @@ import java.util.List;
 @Service
 public class ComentarioService {
 
-    private final ComentarioRepository comentarioRepository;
-    private final ProdutoRepository produtoRepository;
-    private final ClienteRepository clienteRepository;
+    @Autowired
+    private ComentarioRepository repository;
 
-    public ComentarioService(ComentarioRepository comentarioRepository,
-                             ProdutoRepository produtoRepository,
-                             ClienteRepository clienteRepository) {
-        this.comentarioRepository = comentarioRepository;
-        this.produtoRepository = produtoRepository;
-        this.clienteRepository = clienteRepository;
-    }
+    @Autowired
+    private AvaliacaoRepository avaliacaoRepository;
 
-    public Comentario criar(Long produtoId, Long clienteId, String texto) {
-
-        Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-
-        Comentario comentario = new Comentario();
-        comentario.setProduto(produto);
-        comentario.setCliente(cliente);
-        comentario.setComentario(texto);
-
-        return comentarioRepository.save(comentario);
-    }
-
+    // LISTAR TODOS
     public List<Comentario> listar() {
-        return comentarioRepository.findAll();
+        return repository.findAll();
     }
 
+    // BUSCAR POR ID
     public Comentario buscarPorId(Long id) {
-        return comentarioRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
     }
 
+    // BUSCAR POR AVALIAÇÃO
+    public List<Comentario> buscarPorAvaliacao(Long avaliacaoId) {
+        return repository.findByAvaliacao_Id(avaliacaoId);
+    }
+
+    // SALVAR
+    public Comentario salvar(Comentario comentario) {
+
+        String avaliacaoId = comentario.getAvaliacao().getId();
+
+        Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
+                .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+
+        comentario.setAvaliacao(avaliacao);
+
+        return repository.save(comentario);
+    }
+
+    // DELETAR
     public void deletar(Long id) {
-        comentarioRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

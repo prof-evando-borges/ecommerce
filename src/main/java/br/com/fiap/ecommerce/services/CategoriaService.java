@@ -22,7 +22,7 @@ public class CategoriaService {
         }
 
         Optional<Categoria> existente = repository.findByNomeCategoria(categoria.getNomeCategoria());
-        if (existente.isPresent() && !existente.get().getIdCategoria().equals(categoria.getIdCategoria())) {
+        if (existente.isPresent() && !existente.get().getId().equals(categoria.getId())) {
             throw new IllegalArgumentException("Já existe uma categoria cadastrada com este nome.");
         }
 
@@ -33,7 +33,7 @@ public class CategoriaService {
         return repository.findAll();
     }
 
-    public Categoria buscarPorId(Integer id) {
+    public Categoria buscarPorId(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada para o ID: " + id));
     }
@@ -44,7 +44,7 @@ public class CategoriaService {
     }
 
     @Transactional
-    public void deletar(Integer id) {
+    public void deletar(String id) {
         Categoria categoria = buscarPorId(id);
         repository.delete(categoria);
     }
