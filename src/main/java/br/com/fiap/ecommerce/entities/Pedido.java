@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Table(name = "PEDIDO")
+@Table(name = "TB_PEDIDO")
 @Getter
 @Setter
 @Data
@@ -19,17 +19,16 @@ public class Pedido {
     @Column(name = "ID")
     private UUID id;
 
-    @Column(name = "CLIENTE", nullable = false)
-    private String Cliente;
+    @ManyToOne
+    @JoinColumn(name = "ID_CLIENTE", nullable = false)
+    private Cliente cliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
-    private Number numeroPedido;
+    private Integer numeroPedido;
 
     @Column(name = "DATA_ENTREGA", nullable = false)
     private Data dataEntrega;
 
     @Column(name = "VALOR_FINAL", nullable = false)
-    private double valorFinal;
-
-    }
+    private Double valorFinal;
 }

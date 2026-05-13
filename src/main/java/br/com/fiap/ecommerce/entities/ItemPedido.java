@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "ITEMPEDIDO")
+@Table(name = "TB_ITEM_PEDIDO")
 @Getter
 @Setter
 @Data
@@ -17,17 +19,19 @@ public class ItemPedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "ID", nullable = false)
-    private String id;
+    private UUID id;
 
-    @Column(name = "ID_PRODUTO", nullable = false)
-    private String idProduto;
+    @ManyToOne
+    @JoinColumn(name = "ID_PRODUTO", nullable = false)
+    private Produto produto;
 
-    @Column(name = "ID_PEDIDO", nullable = false)
-    private String idPedido;
+    @ManyToOne
+    @JoinColumn(name = "ID_CLIENTE", nullable = false)
+    private Cliente cliente;
 
     @Column(name = "VALOR_ITEM", nullable = false)
     private Double valorItem;
 
     @Column(name = "QUANTIDADE", nullable = false)
-    private int quantidade;
+    private Integer quantidade;
 }

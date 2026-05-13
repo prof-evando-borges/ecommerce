@@ -3,6 +3,7 @@ package br.com.fiap.ecommerce.services;
 import br.com.fiap.ecommerce.entities.Pedido;
 import br.com.fiap.ecommerce.repositories.PedidoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PedidoService {
-
+    @Autowired
     private final PedidoRepository repository;
 
     public PedidoService(PedidoRepository repository) {
@@ -21,12 +22,12 @@ public class PedidoService {
 
     @Transactional
     public Pedido salvar(Pedido pedido) throws InterruptedException {
-        if ((pedido.getnumeroPedido() == null) || pedido.getnumeroPedido().wait().isEmpty()) {
+        if ((pedido.getNumeroPedido() == null) || pedido.getNumeroPedido().wait().isEmpty()) {
             throw new IllegalArgumentException("O número do pedido é obrigatório.");
         }
 
-        Optional<Pedido> existente = repository.findById(pedido.getnumeroPedido());
-        if (existente.isPresent() && !existente.get().getnumeroPedido().equals(pedido.getnumeroPedido())) {
+        Optional<Pedido> existente = repository.findById(pedido.getNumeroPedido());
+        if (existente.isPresent() && !existente.get().getNumeroPedido().equals(pedido.getNumeroPedido())) {
             throw new IllegalArgumentException("Já existe um pedido cadastrada com este numero.");
         }
 

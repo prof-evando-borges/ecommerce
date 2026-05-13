@@ -8,11 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Long> {
-        void salvar(Long id, Pedido pedido);
-        void buscarPorId(Long id, Pedido pedido);
-
-    Optional<Object> findById(String id);
+public interface PedidoRepository extends JpaRepository<Pedido, UUID> {
+    Optional<Pedido> findById(Integer numeroPedido);
 }
