@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +27,13 @@ public class UnidadeMedidaPesoService {
         return repository.findAll();
     }
 
-    public UnidadeMedidaPeso buscarPorId(String id) {
+    public UnidadeMedidaPeso buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Unidade de medida de peso não encontrada."));
     }
 
     @Transactional
-    public void deletar(String id) {
+    public void deletar(UUID id) {
         UnidadeMedidaPeso unidade = buscarPorId(id);
         repository.delete(unidade);
     }
