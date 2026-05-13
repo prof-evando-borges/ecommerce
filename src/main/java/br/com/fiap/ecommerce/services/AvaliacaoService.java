@@ -33,7 +33,7 @@ public class AvaliacaoService {
         return repository.findAll();
     }
 
-    public Avaliacao buscarPorId(Long id) {
+    public Avaliacao buscarPorId(String id) {
         return repository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Avaliação não encontrada"));
@@ -42,8 +42,8 @@ public class AvaliacaoService {
     public Avaliacao salvar(Avaliacao avaliacao) {
 
         Long clienteId = avaliacao.getCliente().getId();
-        Long produtoId = avaliacao.getProduto().getId();
-        Long lojaId = avaliacao.getLoja().getId();
+        String produtoId = avaliacao.getProduto().getId();
+        Long lojaId = avaliacao.getLojista().getId();
 
         repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
                 .ifPresent(a -> {
@@ -66,12 +66,12 @@ public class AvaliacaoService {
 
         avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);
-        avaliacao.setLoja(lojista);
+        avaliacao.setLojista(lojista);
 
         return repository.save(avaliacao);
     }
 
-    public void deletar(Long id) {
+    public void deletar(String id) {
 
         Avaliacao avaliacao = repository.findById(id)
                 .orElseThrow(() ->

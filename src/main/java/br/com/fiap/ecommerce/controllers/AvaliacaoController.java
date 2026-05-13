@@ -17,7 +17,7 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/{id}")
-    public Avaliacao buscarPorId(@PathVariable Long id) {
+    public Avaliacao buscarPorId(@PathVariable String id) {
         return avaliacaoService.buscarPorId(id);
     }
 
@@ -32,7 +32,7 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
+    public void deletar(@PathVariable String id) {
         avaliacaoService.deletar(id);
     }
 }

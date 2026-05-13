@@ -14,7 +14,7 @@ public class Setor {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
     private UUID id;
-    @Column(name = "NOME", nullable = false, length = 100)
+    @Column(name = "NOME", nullable = false, length = 255)
     private String nome;
     @Column(name = "NUMERO_CORREDOR")
     private Integer numeroCorredor;

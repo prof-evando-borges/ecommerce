@@ -38,7 +38,7 @@ public class ComentarioService {
     // SALVAR
     public Comentario salvar(Comentario comentario) {
 
-        Long avaliacaoId = comentario.getAvaliacao().getId();
+        String avaliacaoId = comentario.getAvaliacao().getId();
 
         Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
