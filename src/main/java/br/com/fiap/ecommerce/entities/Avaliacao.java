@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(
-        name = "AVALIACAO",
+        name = "TB_AVALIACAO",
         uniqueConstraints = @UniqueConstraint(
                 columnNames = {"ID_CLIENTE", "ID_PRODUTO"}
         )

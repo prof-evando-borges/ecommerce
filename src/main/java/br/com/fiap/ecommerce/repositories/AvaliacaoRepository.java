@@ -10,6 +10,6 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, UUID> {
 
     Optional<Avaliacao> findByCliente_IdAndProduto_Id(
             UUID clienteId,
-            String produtoId
+            UUID produtoId
     );
 }

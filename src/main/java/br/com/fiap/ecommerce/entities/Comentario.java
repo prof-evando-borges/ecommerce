@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Entity
-@Table(name = "COMENTARIOS")
+@Table(name = "TB_COMENTARIOS")
 @Data
 public class Comentario {
 

@@ -43,7 +43,7 @@ public class AvaliacaoService {
     public Avaliacao salvar(Avaliacao avaliacao) {
 
         UUID clienteId = avaliacao.getCliente().getId();
-        String produtoId = avaliacao.getProduto().getId();
+        UUID produtoId = avaliacao.getProduto().getId();
         UUID lojaId = avaliacao.getLojista().getId();
 
         repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
