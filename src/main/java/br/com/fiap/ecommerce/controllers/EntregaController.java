@@ -39,16 +39,14 @@ public class EntregaController {
 
     @PutMapping(value = "/criar-entrega")
     public ResponseEntity<Entrega> criarEntrega(@RequestBody @Valid Entrega obj){
-        Entrega entrega = obj;
-        service.salvar(entrega);
-        return ResponseEntity.ok().body(entrega);
+        service.salvar(obj);
+        return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping(value = "/atualizar-entrega")
     public ResponseEntity<Entrega> atualizarTransportadora(@RequestBody @Valid Entrega obj){
-        Entrega entrega = obj;
-        service.salvar(entrega);
-        return ResponseEntity.ok().body(entrega);
+        service.salvar(obj);
+        return ResponseEntity.ok().body(obj);
     }
 
 }
