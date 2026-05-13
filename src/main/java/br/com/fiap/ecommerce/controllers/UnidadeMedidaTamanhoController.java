@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.UnidadeMedidaTamanhoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/unidades-tamanho")
@@ -17,7 +18,7 @@ public class UnidadeMedidaTamanhoController {
     }
 
     @GetMapping("/{id}")
-    public UnidadeMedidaTamanho buscarPorId(@PathVariable String id) {
+    public UnidadeMedidaTamanho buscarPorId(@PathVariable UUID id) {
         return unidadeMedidaTamanhoService.buscarPorId(id);
     }
 
@@ -37,7 +38,7 @@ public class UnidadeMedidaTamanhoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable String id) {
+    public void deletar(@PathVariable UUID id) {
         unidadeMedidaTamanhoService.deletar(id);
     }
 }

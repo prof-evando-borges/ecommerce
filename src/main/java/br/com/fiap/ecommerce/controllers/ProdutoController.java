@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.ProdutoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/produtos")
@@ -17,7 +18,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable String id) {
+    public Produto buscarPorId(@PathVariable UUID id) {
         return produtoService.buscarPorId(id);
     }
 
@@ -37,7 +38,7 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable String id) {
+    public void deletar(@PathVariable UUID id) {
         produtoService.deletar(id);
     }
 }
