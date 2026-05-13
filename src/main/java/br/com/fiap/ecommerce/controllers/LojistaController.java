@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.LojistaService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/lojistas")
@@ -17,7 +18,7 @@ public class LojistaController {
     }
 
     @GetMapping("/{id}")
-    public Lojista buscarPorId(@PathVariable Long id) {
+    public Lojista buscarPorId(@PathVariable UUID id) {
         return lojistaService.buscarPorId(id);
     }
 
@@ -37,7 +38,7 @@ public class LojistaController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletarConta(@PathVariable Long id) {
+    public void deletarConta(@PathVariable UUID id) {
         lojistaService.deletarConta(id);
     }
 
