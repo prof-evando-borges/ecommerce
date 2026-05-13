@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
 @Table(
         name = "AVALIACAO",
@@ -18,7 +20,7 @@ public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private String id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "ID_PRODUTO", nullable = false)

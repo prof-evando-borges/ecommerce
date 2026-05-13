@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ComentarioService {
@@ -25,7 +26,7 @@ public class ComentarioService {
     }
 
     // BUSCAR POR ID
-    public Comentario buscarPorId(Long id) {
+    public Comentario buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
     }
@@ -38,7 +39,7 @@ public class ComentarioService {
     // SALVAR
     public Comentario salvar(Comentario comentario) {
 
-        String avaliacaoId = comentario.getAvaliacao().getId();
+        UUID avaliacaoId = comentario.getAvaliacao().getId();
 
         Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
@@ -49,7 +50,7 @@ public class ComentarioService {
     }
 
     // DELETAR
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         repository.deleteById(id);
     }
 }

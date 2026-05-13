@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.ComentarioService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/comentarios")
@@ -17,7 +18,7 @@ public class ComentarioController {
     }
 
     @GetMapping("/{id}")
-    public Comentario buscarPorId(@PathVariable Long id) {
+    public Comentario buscarPorId(@PathVariable UUID id) {
         return comentarioService.buscarPorId(id);
     }
 
@@ -32,7 +33,7 @@ public class ComentarioController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
+    public void deletar(@PathVariable UUID id) {
         comentarioService.deletar(id);
     }
 }

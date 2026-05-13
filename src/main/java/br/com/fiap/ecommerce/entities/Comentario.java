@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "COMENTARIOS")
 @Data
@@ -13,7 +15,7 @@ public class Comentario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private String id;
+    private UUID id;
 
     @NotBlank(message = "O comentário é obrigatório")
     @Size(max = 500, message = "O comentário deve ter no máximo 500 caracteres")

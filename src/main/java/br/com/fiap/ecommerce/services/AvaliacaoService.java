@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AvaliacaoService {
@@ -33,7 +34,7 @@ public class AvaliacaoService {
         return repository.findAll();
     }
 
-    public Avaliacao buscarPorId(String id) {
+    public Avaliacao buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Avaliação não encontrada"));
@@ -71,7 +72,7 @@ public class AvaliacaoService {
         return repository.save(avaliacao);
     }
 
-    public void deletar(String id) {
+    public void deletar(UUID id) {
 
         Avaliacao avaliacao = repository.findById(id)
                 .orElseThrow(() ->
