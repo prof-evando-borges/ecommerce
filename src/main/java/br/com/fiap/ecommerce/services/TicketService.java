@@ -16,11 +16,15 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    public TicketService(TicketRepository ticketRepository) {
-        this.ticketRepository = ticketRepository;
-    }
+    // Regra de negócio 1: status deve ser ABERTO, EM_ANDAMENTO ou FECHADO
+    private static final List<String> STATUS_VALIDOS = List.of("ABERTO", "EM_ANDAMENTO", "FECHADO");
 
     public Ticket criarTicket(Ticket ticket) {
+        if (!STATUS_VALIDOS.contains(ticket.getStatus())) {
+            throw new TicketException(
+                    "Status inválido: '" + ticket.getStatus() + "'. Use: ABERTO, EM_ANDAMENTO ou FECHADO."
+            );
+        }
         return ticketRepository.save(ticket);
     }
 
@@ -38,10 +42,22 @@ public class TicketService {
     }
 
     public Ticket atualizar(Ticket ticket) {
+        if (!STATUS_VALIDOS.contains(ticket.getStatus())) {
+            throw new TicketException(
+                    "Status inválido: '" + ticket.getStatus() + "'. Use: ABERTO, EM_ANDAMENTO ou FECHADO."
+            );
+        }
         return ticketRepository.save(ticket);
     }
 
+    // Regra de negócio 2: não pode deletar ticket que está EM_ANDAMENTO
     public void deletar(UUID id) {
+        Ticket ticket = buscarPorId(id);
+        if ("EM_ANDAMENTO".equals(ticket.getStatus())) {
+            throw new TicketException(
+                    "Não é possível excluir um ticket com status EM_ANDAMENTO."
+            );
+        }
         ticketRepository.deleteById(id);
     }
 

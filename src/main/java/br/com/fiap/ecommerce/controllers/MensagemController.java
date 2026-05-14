@@ -36,7 +36,7 @@ public class MensagemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Mensagem> atualizar(@PathVariable String id, @RequestBody @Valid Mensagem mensagem) {
+    public ResponseEntity<Mensagem> atualizar(@PathVariable UUID id, @RequestBody @Valid Mensagem mensagem) {
         mensagem.setId(id);
         return ResponseEntity.ok(mensagemService.atualizar(mensagem));
     }

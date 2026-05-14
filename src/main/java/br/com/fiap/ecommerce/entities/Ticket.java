@@ -61,7 +61,4 @@ public class Ticket {
     public void preUpdate() {
         dataAtualizacao = LocalDateTime.now();
     }
-
-    public void setId(String id) {
-    }
 }
