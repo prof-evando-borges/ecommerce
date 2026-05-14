@@ -6,7 +6,6 @@ import br.com.fiap.ecommerce.exceptions.MensagemException;
 import br.com.fiap.ecommerce.exceptions.TicketException;
 import br.com.fiap.ecommerce.repositories.MensagemRepository;
 import br.com.fiap.ecommerce.repositories.TicketRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +16,11 @@ public class MensagemService {
 
     private final MensagemRepository mensagemRepository;
     private final TicketRepository ticketRepository;
+
+    public MensagemService(MensagemRepository mensagemRepository, TicketRepository ticketRepository) {
+        this.mensagemRepository = mensagemRepository;
+        this.ticketRepository = ticketRepository;
+    }
 
     // Regra de negócio: não pode enviar mensagem para ticket FECHADO
     public Mensagem enviarMensagem(Mensagem mensagem) {

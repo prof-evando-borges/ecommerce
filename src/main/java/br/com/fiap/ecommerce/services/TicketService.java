@@ -4,7 +4,6 @@ import br.com.fiap.ecommerce.entities.Cliente;
 import br.com.fiap.ecommerce.entities.Ticket;
 import br.com.fiap.ecommerce.exceptions.TicketException;
 import br.com.fiap.ecommerce.repositories.TicketRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +14,13 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    // Regra de negócio 1: status deve ser ABERTO, EM_ANDAMENTO ou FECHADO
+    public TicketService(TicketRepository ticketRepository) {
+        this.ticketRepository = ticketRepository;
+    }
+
     private static final List<String> STATUS_VALIDOS = List.of("ABERTO", "EM_ANDAMENTO", "FECHADO");
 
+    // Regra de negócio 1: status deve ser ABERTO, EM_ANDAMENTO ou FECHADO
     public Ticket criarTicket(Ticket ticket) {
         if (!STATUS_VALIDOS.contains(ticket.getStatus())) {
             throw new TicketException(
@@ -49,7 +52,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    // Regra de negócio 2: não pode deletar ticket que está EM_ANDAMENTO
+    // Regra de negócio 2: não pode deletar ticket com status EM_ANDAMENTO
     public void deletar(UUID id) {
         Ticket ticket = buscarPorId(id);
         if ("EM_ANDAMENTO".equals(ticket.getStatus())) {
