@@ -4,15 +4,17 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "LOJISTA")
+@Table(name = "TB_LOJISTA")
 @Data
 public class Lojista {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "O CNPJ é obrigatório")
     @Size(min = 14, max = 14, message = "O CNPJ deve conter exatamente 14 caracteres")

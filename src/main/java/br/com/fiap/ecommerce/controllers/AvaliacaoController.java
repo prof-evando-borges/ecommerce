@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.AvaliacaoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/avaliacoes")
@@ -17,7 +18,7 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/{id}")
-    public Avaliacao buscarPorId(@PathVariable Long id) {
+    public Avaliacao buscarPorId(@PathVariable UUID id) {
         return avaliacaoService.buscarPorId(id);
     }
 
@@ -32,7 +33,7 @@ public class AvaliacaoController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
+    public void deletar(@PathVariable UUID id) {
         avaliacaoService.deletar(id);
     }
 }

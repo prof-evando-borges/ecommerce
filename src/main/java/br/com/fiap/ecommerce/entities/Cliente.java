@@ -8,15 +8,17 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "CLIENTE")
+@Table(name = "TB_CLIENTE")
 @Data
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "O CPF é obrigatório")
     @Size(min = 11, max = 11, message = "O CPF deve conter exatamente 11 caracteres")
