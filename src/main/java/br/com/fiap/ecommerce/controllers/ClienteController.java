@@ -1,7 +1,11 @@
 package br.com.fiap.ecommerce.controllers;
 
 import br.com.fiap.ecommerce.entities.Cliente;
+import br.com.fiap.ecommerce.models.AlterarSenhaRequest;
+import br.com.fiap.ecommerce.models.AutenticarRequest;
 import br.com.fiap.ecommerce.services.ClienteService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,4 +46,23 @@ public class ClienteController {
         clienteService.deletarConta(id);
     }
 
+    @PutMapping("/senha")
+    public ResponseEntity<String> alterarSenha(@RequestBody AlterarSenhaRequest request) {
+        try {
+            clienteService.alterarSenha(request.getEmail(), request.getSenhaAtual(), request.getNovaSenha());
+            return ResponseEntity.ok("Senha alterada com sucesso.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Cliente> autenticar(@RequestBody AutenticarRequest request) {
+        try {
+            Cliente cliente = clienteService.autenticar(request.getEmail(), request.getSenha());
+            return ResponseEntity.ok(cliente);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
 }
