@@ -24,16 +24,23 @@ import java.util.UUID;
 public class PagamentoService {
 
     @Autowired
-    private PagamentoRepository pagamentoRepository;
+    private final PagamentoRepository pagamentoRepository;
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
     @Autowired
-    private CartaoRepository cartaoRepository;
+    private final CartaoRepository cartaoRepository;
 
     @Autowired
-    private CupomService cupomService;
+    private final CupomService cupomService;
+
+    public PagamentoService(PagamentoRepository pagamentoRepository, ClienteRepository clienteRepository, CartaoRepository cartaoRepository, CupomService cupomService) {
+        this.pagamentoRepository = pagamentoRepository;
+        this.clienteRepository = clienteRepository;
+        this.cartaoRepository = cartaoRepository;
+        this.cupomService = cupomService;
+    }
 
     public List<Pagamento> listarTodos() {
         return pagamentoRepository.findAll();
@@ -55,6 +62,8 @@ public class PagamentoService {
     }
 
     public Pagamento processar(Pagamento pagamento) {
+
+        // Valida existência do cliente
         UUID idCliente = pagamento.getCliente().getId();
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new PagamentoException("Cliente não encontrado com id: " + idCliente));
@@ -65,12 +74,15 @@ public class PagamentoService {
         if (pagamento.getCartao() != null && pagamento.getCartao().getId() != null) {
             Cartao cartao = cartaoRepository.findById(pagamento.getCartao().getId())
                     .orElseThrow(() -> new CartaoException("Cartão não encontrado com id: " + pagamento.getCartao().getId()));
+
             if (!cartao.isAtivo()) {
                 throw new CartaoException("O cartão informado está inativo");
             }
+
             if (!cartao.getCliente().getId().equals(idCliente)) {
                 throw new CartaoException("O cartão não pertence ao cliente informado");
             }
+
             pagamento.setCartao(cartao);
         }
 
@@ -78,14 +90,16 @@ public class PagamentoService {
 
         if (pagamento.getCupom() != null && pagamento.getCupom().getId() != null) {
             Cupom cupom = cupomService.buscarPorId(pagamento.getCupom().getId());
-            cupomService.validarParaUso(cupom.getCodigo());
+            cupomService.validarParaUso(cupom.getCodigo()); // lança CupomException se inválido
             desconto = calcularDesconto(pagamento.getValorOriginal(), cupom);
             pagamento.setCupom(cupom);
             cupomService.incrementarUso(cupom);
         }
 
         pagamento.setValorDesconto(desconto);
-        pagamento.setValorFinal(pagamento.getValorOriginal().subtract(desconto).max(BigDecimal.ZERO));
+        pagamento.setValorFinal(
+                pagamento.getValorOriginal().subtract(desconto).max(BigDecimal.ZERO)
+        );
         pagamento.setStatus(StatusPagamentoEnum.APROVADO);
 
         return pagamentoRepository.save(pagamento);
@@ -96,8 +110,7 @@ public class PagamentoService {
 
         if (pagamento.getStatus() == StatusPagamentoEnum.CANCELADO
                 || pagamento.getStatus() == StatusPagamentoEnum.ESTORNADO) {
-            throw new PagamentoException("Não é possível alterar o status de um pagamento "
-                    + pagamento.getStatus().name().toLowerCase());
+            throw new PagamentoException("Não é possível alterar o status de um pagamento " + pagamento.getStatus().name().toLowerCase());
         }
 
         pagamento.setStatus(novoStatus);
@@ -106,10 +119,12 @@ public class PagamentoService {
 
     public void deletar(UUID id) {
         Pagamento pagamento = buscarPorId(id);
+
         if (pagamento.getStatus() == StatusPagamentoEnum.APROVADO) {
             throw new PagamentoException(
                     "Não é possível excluir um pagamento aprovado. Utilize o cancelamento ou estorno.");
         }
+
         pagamentoRepository.delete(pagamento);
     }
 
@@ -121,6 +136,7 @@ public class PagamentoService {
             throw new PagamentoException(
                     "É necessário informar um cartão para o método de pagamento selecionado");
         }
+
         if (!requerCartao && pagamento.getCartao() != null && pagamento.getCartao().getId() != null) {
             throw new PagamentoException("O método de pagamento selecionado não utiliza cartão");
         }
@@ -128,7 +144,8 @@ public class PagamentoService {
 
     private BigDecimal calcularDesconto(BigDecimal valorOriginal, Cupom cupom) {
         if (cupom.getTipoDesconto() == TipoDescontoEnum.PERCENTUAL) {
-            return valorOriginal.multiply(cupom.getValorDesconto())
+            return valorOriginal
+                    .multiply(cupom.getValorDesconto())
                     .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
         }
         return cupom.getValorDesconto().min(valorOriginal);
