@@ -21,6 +21,12 @@ public class EntregaController {
     @Autowired
     private EntregaService service;
 
+    @PostMapping()
+    public ResponseEntity<Entrega> criar(@RequestBody @Valid Entrega obj){
+        service.criar(obj);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @GetMapping
     public ResponseEntity<List<Entrega>> findAll(){
         List<Entrega> obj = service.listarTodos();
