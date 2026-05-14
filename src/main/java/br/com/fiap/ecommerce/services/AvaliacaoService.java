@@ -30,6 +30,7 @@ public class AvaliacaoService {
     @Autowired
     private LojistaRepository lojistaRepository;
 
+
     public List<Avaliacao> listar() {
         return repository.findAll();
     }
@@ -48,22 +49,24 @@ public class AvaliacaoService {
 
         repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
                 .ifPresent(a -> {
-                    throw new RuntimeException(
-                            "Cliente já avaliou esse produto"
-                    );
+                    throw new RuntimeException("Cliente já avaliou esse produto");
                 });
 
+        boolean comprou = pedidoRepository
+                .existsByCliente_IdAndProduto_Id(clienteId, produtoId);
+
+        if (!comprou) {
+            throw new RuntimeException("Cliente não comprou esse produto");
+        }
+
         Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() ->
-                        new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() ->
-                        new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Lojista lojista = lojistaRepository.findById(lojaId)
-                .orElseThrow(() ->
-                        new RuntimeException("Loja não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Loja não encontrada"));
 
         avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);

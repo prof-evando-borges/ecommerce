@@ -20,23 +20,19 @@ public class ComentarioService {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
-    // LISTAR TODOS
     public List<Comentario> listar() {
         return repository.findAll();
     }
 
-    // BUSCAR POR ID
     public Comentario buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
     }
 
-    // BUSCAR POR AVALIAÇÃO
     public List<Comentario> buscarPorAvaliacao(UUID avaliacaoId) {
         return repository.findByAvaliacao_Id(avaliacaoId);
     }
 
-    // SALVAR
     public Comentario salvar(Comentario comentario) {
 
         UUID avaliacaoId = comentario.getAvaliacao().getId();
@@ -44,12 +40,21 @@ public class ComentarioService {
         Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
 
+        if (!avaliacao.getCliente().getId()
+                .equals(comentario.getCliente().getId())) {
+
+            throw new RuntimeException("Cliente não pode comentar avaliação de outro cliente");
+        }
+
+        if (comentario.getComentario() == null || comentario.getComentario().trim().isEmpty()) {
+            throw new RuntimeException("Comentário não pode ser vazio");
+        }
+
         comentario.setAvaliacao(avaliacao);
 
         return repository.save(comentario);
     }
 
-    // DELETAR
     public void deletar(UUID id) {
         repository.deleteById(id);
     }
