@@ -30,6 +30,8 @@ public class AvaliacaoService {
     @Autowired
     private LojistaRepository lojistaRepository;
 
+    boolean comprou = pedidoRepository.existsByCliente_IdAndProduto_Id(clienteId, produtoId);
+
     public List<Avaliacao> listar() {
         return repository.findAll();
     }
@@ -46,24 +48,21 @@ public class AvaliacaoService {
         UUID produtoId = avaliacao.getProduto().getId();
         UUID lojaId = avaliacao.getLojista().getId();
 
-        repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
-                .ifPresent(a -> {
-                    throw new RuntimeException(
-                            "Cliente já avaliou esse produto"
-                    );
+        repository.findByCliente_IdAndProduto_Id(clienteId, produtoId).ifPresent(a -> {
+                    throw new RuntimeException("Cliente já avaliou esse produto");
                 });
 
-        Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() ->
+        Produto produto = produtoRepository.findById(produtoId).orElseThrow(() ->
                         new RuntimeException("Produto não encontrado"));
 
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() ->
+        Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(() ->
                         new RuntimeException("Cliente não encontrado"));
 
-        Lojista lojista = lojistaRepository.findById(lojaId)
-                .orElseThrow(() ->
+        Lojista lojista = lojistaRepository.findById(lojaId).orElseThrow(() ->
                         new RuntimeException("Loja não encontrada"));
+
+
+        if (!comprou) {throw new RuntimeException("Cliente não comprou esse produto");
 
         avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);
