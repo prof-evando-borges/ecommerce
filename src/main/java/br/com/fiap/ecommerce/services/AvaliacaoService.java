@@ -52,11 +52,8 @@ public class AvaliacaoService {
                     throw new RuntimeException("Cliente já avaliou esse produto");
                 });
 
-        boolean comprou = pedidoRepository
-                .existsByCliente_IdAndProduto_Id(clienteId, produtoId);
-
-        if (!comprou) {
-            throw new RuntimeException("Cliente não comprou esse produto");
+        if (avaliacao.getNota() < 0 || avaliacao.getNota() > 5) {
+            throw new RuntimeException("Nota deve estar entre 0 e 5");
         }
 
         Produto produto = produtoRepository.findById(produtoId)
