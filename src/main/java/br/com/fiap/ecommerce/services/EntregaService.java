@@ -21,6 +21,10 @@ public class EntregaService {
     @Autowired
     private TransportadoraRepository transportadoraRepository;
 
+    public void criar(Entrega entrega){
+        repository.save(entrega);
+    }
+
     public void salvar(Entrega entrega){
         Entrega obj = repository.findById(entrega.getId()).orElseThrow(() -> new EntregaException("Entrega não encontrada"));
         repository.save(obj);
