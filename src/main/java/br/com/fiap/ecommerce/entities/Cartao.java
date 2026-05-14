@@ -3,13 +3,18 @@ package br.com.fiap.ecommerce.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.UUID;
 
 @Entity
 @Table(name = "TB_CARTAO")
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Cartao {
 
     @Id
@@ -44,4 +49,12 @@ public class Cartao {
 
     @Column(name = "ATIVO", nullable = false)
     private boolean ativo = true;
+
+    @CreatedDate
+    @Column(name = "DATA_CRIACAO", nullable = false, updatable = false)
+    private LocalDateTime dataCriacao;
+
+    @LastModifiedDate
+    @Column(name = "DATA_ATUALIZACAO", nullable = false)
+    private LocalDateTime dataAtualizacao;
 }
