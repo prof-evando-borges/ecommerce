@@ -24,23 +24,16 @@ import java.util.UUID;
 public class PagamentoService {
 
     @Autowired
-    private final PagamentoRepository pagamentoRepository;
+    private PagamentoRepository pagamentoRepository;
 
     @Autowired
-    private final ClienteRepository clienteRepository;
+    private ClienteRepository clienteRepository;
 
     @Autowired
-    private final CartaoRepository cartaoRepository;
+    private CartaoRepository cartaoRepository;
 
     @Autowired
-    private final CupomService cupomService;
-
-    public PagamentoService(PagamentoRepository pagamentoRepository, ClienteRepository clienteRepository, CartaoRepository cartaoRepository, CupomService cupomService) {
-        this.pagamentoRepository = pagamentoRepository;
-        this.clienteRepository = clienteRepository;
-        this.cartaoRepository = cartaoRepository;
-        this.cupomService = cupomService;
-    }
+    private CupomService cupomService;
 
     public List<Pagamento> listarTodos() {
         return pagamentoRepository.findAll();
@@ -62,8 +55,6 @@ public class PagamentoService {
     }
 
     public Pagamento processar(Pagamento pagamento) {
-
-        // Valida existência do cliente
         UUID idCliente = pagamento.getCliente().getId();
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new PagamentoException("Cliente não encontrado com id: " + idCliente));
@@ -73,16 +64,14 @@ public class PagamentoService {
 
         if (pagamento.getCartao() != null && pagamento.getCartao().getId() != null) {
             Cartao cartao = cartaoRepository.findById(pagamento.getCartao().getId())
-                    .orElseThrow(() -> new CartaoException("Cartão não encontrado com id: " + pagamento.getCartao().getId()));
-
+                    .orElseThrow(() -> new CartaoException("Cartão não encontrado com id: "
+                            + pagamento.getCartao().getId()));
             if (!cartao.isAtivo()) {
                 throw new CartaoException("O cartão informado está inativo");
             }
-
             if (!cartao.getCliente().getId().equals(idCliente)) {
                 throw new CartaoException("O cartão não pertence ao cliente informado");
             }
-
             pagamento.setCartao(cartao);
         }
 
@@ -90,16 +79,14 @@ public class PagamentoService {
 
         if (pagamento.getCupom() != null && pagamento.getCupom().getId() != null) {
             Cupom cupom = cupomService.buscarPorId(pagamento.getCupom().getId());
-            cupomService.validarParaUso(cupom.getCodigo()); // lança CupomException se inválido
+            cupomService.validarParaUso(cupom.getCodigo());
             desconto = calcularDesconto(pagamento.getValorOriginal(), cupom);
             pagamento.setCupom(cupom);
             cupomService.incrementarUso(cupom);
         }
 
         pagamento.setValorDesconto(desconto);
-        pagamento.setValorFinal(
-                pagamento.getValorOriginal().subtract(desconto).max(BigDecimal.ZERO)
-        );
+        pagamento.setValorFinal(pagamento.getValorOriginal().subtract(desconto).max(BigDecimal.ZERO));
         pagamento.setStatus(StatusPagamentoEnum.APROVADO);
 
         return pagamentoRepository.save(pagamento);
@@ -110,7 +97,8 @@ public class PagamentoService {
 
         if (pagamento.getStatus() == StatusPagamentoEnum.CANCELADO
                 || pagamento.getStatus() == StatusPagamentoEnum.ESTORNADO) {
-            throw new PagamentoException("Não é possível alterar o status de um pagamento " + pagamento.getStatus().name().toLowerCase());
+            throw new PagamentoException("Não é possível alterar o status de um pagamento "
+                    + pagamento.getStatus().name().toLowerCase());
         }
 
         pagamento.setStatus(novoStatus);
