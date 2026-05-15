@@ -3,9 +3,12 @@ package br.com.fiap.ecommerce.controllers;
 import br.com.fiap.ecommerce.entities.Mensagem;
 import br.com.fiap.ecommerce.services.MensagemService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/mensagens")
@@ -18,27 +21,29 @@ public class MensagemController {
     }
 
     @GetMapping
-    public List<Mensagem> listarTodas() {
-        return mensagemService.listarTodas();
+    public ResponseEntity<List<Mensagem>> listarTodas() {
+        return ResponseEntity.ok(mensagemService.listarTodas());
     }
 
     @GetMapping("/{id}")
-    public Mensagem buscarPorId(@PathVariable Long id) {
-        return mensagemService.buscarPorId(id);
+    public ResponseEntity<Mensagem> buscarPorId(@PathVariable UUID id) {
+        return ResponseEntity.ok(mensagemService.buscarPorId(id));
     }
 
     @PostMapping
-    public Mensagem enviarMensagem(@RequestBody @Valid Mensagem mensagem) {
-        return mensagemService.enviarMensagem(mensagem);
+    public ResponseEntity<Mensagem> enviarMensagem(@RequestBody @Valid Mensagem mensagem) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(mensagemService.enviarMensagem(mensagem));
     }
 
-    @PutMapping
-    public Mensagem atualizar(@RequestBody @Valid Mensagem mensagem) {
-        return mensagemService.atualizar(mensagem);
+    @PutMapping("/{id}")
+    public ResponseEntity<Mensagem> atualizar(@PathVariable UUID id, @RequestBody @Valid Mensagem mensagem) {
+        mensagem.setId(id);
+        return ResponseEntity.ok(mensagemService.atualizar(mensagem));
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         mensagemService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

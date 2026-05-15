@@ -4,18 +4,22 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "TB_MENSAGEM")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Mensagem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
-    private Long id;
+    private UUID id;
 
     @NotNull(message = "O ticket é obrigatório")
     @ManyToOne
@@ -34,4 +38,9 @@ public class Mensagem {
 
     @Column(name = "DATA_ENVIO", updatable = false)
     private LocalDateTime dataEnvio;
+
+    @PrePersist
+    public void prePersist() {
+        dataEnvio = LocalDateTime.now();
+    }
 }

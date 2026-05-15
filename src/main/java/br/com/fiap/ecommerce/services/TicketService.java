@@ -2,32 +2,37 @@ package br.com.fiap.ecommerce.services;
 
 import br.com.fiap.ecommerce.entities.Cliente;
 import br.com.fiap.ecommerce.entities.Ticket;
+import br.com.fiap.ecommerce.exceptions.TicketException;
 import br.com.fiap.ecommerce.repositories.TicketRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TicketService {
 
-    @Autowired
-    private TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
 
     public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
 
+    private static final List<String> STATUS_VALIDOS = List.of("ABERTO", "EM_ANDAMENTO", "FECHADO");
+
+    // Regra de negócio 1: status deve ser ABERTO, EM_ANDAMENTO ou FECHADO
     public Ticket criarTicket(Ticket ticket) {
+        if (!STATUS_VALIDOS.contains(ticket.getStatus())) {
+            throw new TicketException(
+                    "Status inválido: '" + ticket.getStatus() + "'. Use: ABERTO, EM_ANDAMENTO ou FECHADO."
+            );
+        }
         return ticketRepository.save(ticket);
     }
 
-    public Ticket salvar(Ticket ticket) {
-        return ticketRepository.save(ticket);
-    }
-
-    public Ticket buscarPorId(Long id) {
-        return ticketRepository.findById(id).orElse(null);
+    public Ticket buscarPorId(UUID id) {
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new TicketException("Ticket não encontrado com id: " + id));
     }
 
     public List<Ticket> buscarPorCliente(Cliente cliente) {
@@ -39,26 +44,26 @@ public class TicketService {
     }
 
     public Ticket atualizar(Ticket ticket) {
+        if (!STATUS_VALIDOS.contains(ticket.getStatus())) {
+            throw new TicketException(
+                    "Status inválido: '" + ticket.getStatus() + "'. Use: ABERTO, EM_ANDAMENTO ou FECHADO."
+            );
+        }
         return ticketRepository.save(ticket);
     }
 
-    public void deletar(Long id) {
+    // Regra de negócio 2: não pode deletar ticket com status EM_ANDAMENTO
+    public void deletar(UUID id) {
+        Ticket ticket = buscarPorId(id);
+        if ("EM_ANDAMENTO".equals(ticket.getStatus())) {
+            throw new TicketException(
+                    "Não é possível excluir um ticket com status EM_ANDAMENTO."
+            );
+        }
         ticketRepository.deleteById(id);
     }
 
     public List<Ticket> listarTodos() {
         return ticketRepository.findAll();
-    }
-
-    public Ticket abrirTicket(Ticket ticket) {
-        return ticketRepository.save(ticket);
-    }
-
-    public Ticket atualizarStatusTicket(Ticket ticket) {
-        return ticketRepository.save(ticket);
-    }
-
-    public List<Ticket> listarTicketsPorStatus(String status) {
-        return ticketRepository.findByStatus(status);
     }
 }

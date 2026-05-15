@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ComentarioService {
@@ -19,37 +20,42 @@ public class ComentarioService {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
 
-    // LISTAR TODOS
     public List<Comentario> listar() {
         return repository.findAll();
     }
 
-    // BUSCAR POR ID
-    public Comentario buscarPorId(Long id) {
+    public Comentario buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comentário não encontrado"));
     }
 
-    // BUSCAR POR AVALIAÇÃO
-    public List<Comentario> buscarPorAvaliacao(Long avaliacaoId) {
+    public List<Comentario> buscarPorAvaliacao(UUID avaliacaoId) {
         return repository.findByAvaliacao_Id(avaliacaoId);
     }
 
-    // SALVAR
     public Comentario salvar(Comentario comentario) {
 
-        String avaliacaoId = comentario.getAvaliacao().getId();
+        UUID avaliacaoId = comentario.getAvaliacao().getId();
 
         Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+
+        if (!avaliacao.getCliente().getId()
+                .equals(comentario.getCliente().getId())) {
+
+            throw new RuntimeException("Cliente não pode comentar avaliação de outro cliente");
+        }
+
+        if (comentario.getComentario() == null || comentario.getComentario().trim().isEmpty()) {
+            throw new RuntimeException("Comentário não pode ser vazio");
+        }
 
         comentario.setAvaliacao(avaliacao);
 
         return repository.save(comentario);
     }
 
-    // DELETAR
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         repository.deleteById(id);
     }
 }

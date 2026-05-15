@@ -2,28 +2,42 @@ package br.com.fiap.ecommerce.services;
 
 import br.com.fiap.ecommerce.entities.Mensagem;
 import br.com.fiap.ecommerce.entities.Ticket;
+import br.com.fiap.ecommerce.exceptions.MensagemException;
+import br.com.fiap.ecommerce.exceptions.TicketException;
 import br.com.fiap.ecommerce.repositories.MensagemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.fiap.ecommerce.repositories.TicketRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MensagemService {
 
-    @Autowired
-    private MensagemRepository mensagemRepository;
+    private final MensagemRepository mensagemRepository;
+    private final TicketRepository ticketRepository;
 
-    public MensagemService(MensagemRepository mensagemRepository) {
+    public MensagemService(MensagemRepository mensagemRepository, TicketRepository ticketRepository) {
         this.mensagemRepository = mensagemRepository;
+        this.ticketRepository = ticketRepository;
     }
 
+    // Regra de negócio: não pode enviar mensagem para ticket FECHADO
     public Mensagem enviarMensagem(Mensagem mensagem) {
+        Ticket ticket = ticketRepository.findById(mensagem.getTicket().getId())
+                .orElseThrow(() -> new TicketException("Ticket não encontrado."));
+
+        if ("FECHADO".equals(ticket.getStatus())) {
+            throw new MensagemException(
+                    "Não é possível enviar mensagens para um ticket com status FECHADO."
+            );
+        }
         return mensagemRepository.save(mensagem);
     }
 
-    public Mensagem buscarPorId(Long id) {
-        return mensagemRepository.findById(id).orElse(null);
+    public Mensagem buscarPorId(UUID id) {
+        return mensagemRepository.findById(id)
+                .orElseThrow(() -> new MensagemException("Mensagem não encontrada com id: " + id));
     }
 
     public List<Mensagem> buscarPorTicket(Ticket ticket) {
@@ -38,7 +52,7 @@ public class MensagemService {
         return mensagemRepository.save(mensagem);
     }
 
-    public void deletar(Long id) {
+    public void deletar(UUID id) {
         mensagemRepository.deleteById(id);
     }
 }

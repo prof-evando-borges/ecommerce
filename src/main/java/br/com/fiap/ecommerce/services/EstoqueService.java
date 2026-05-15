@@ -35,13 +35,12 @@ public class EstoqueService {
     }
 
     public Estoque adicionarEstoque(Estoque estoque) {
-
-        if (estoque.getResponsavel() != null) {
-            Long idLojista = estoque.getResponsavel().getId();
+        if (estoque.getIdLojista() == null) {
+            UUID idLojista = estoque.getIdLojista().getId();
             Lojista lojista = lojistaRepository.findById(idLojista)
                     .orElseThrow(() ->
                             new RuntimeException("Lojista não encontrado"));
-            estoque.setResponsavel(lojista);
+            estoque.setIdLojista(lojista);
         }
         return estoqueRepository.save(estoque);
     }

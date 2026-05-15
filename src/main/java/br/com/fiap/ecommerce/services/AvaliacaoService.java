@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AvaliacaoService {
@@ -29,11 +30,12 @@ public class AvaliacaoService {
     @Autowired
     private LojistaRepository lojistaRepository;
 
+
     public List<Avaliacao> listar() {
         return repository.findAll();
     }
 
-    public Avaliacao buscarPorId(String id) {
+    public Avaliacao buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Avaliação não encontrada"));
@@ -41,28 +43,27 @@ public class AvaliacaoService {
 
     public Avaliacao salvar(Avaliacao avaliacao) {
 
-        Long clienteId = avaliacao.getCliente().getId();
-        String produtoId = avaliacao.getProduto().getId();
-        Long lojaId = avaliacao.getLojista().getId();
+        UUID clienteId = avaliacao.getCliente().getId();
+        UUID produtoId = avaliacao.getProduto().getId();
+        UUID lojaId = avaliacao.getLojista().getId();
 
         repository.findByCliente_IdAndProduto_Id(clienteId, produtoId)
                 .ifPresent(a -> {
-                    throw new RuntimeException(
-                            "Cliente já avaliou esse produto"
-                    );
+                    throw new RuntimeException("Cliente já avaliou esse produto");
                 });
 
+        if (avaliacao.getNota() < 0 || avaliacao.getNota() > 5) {
+            throw new RuntimeException("Nota deve estar entre 0 e 5");
+        }
+
         Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() ->
-                        new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() ->
-                        new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Lojista lojista = lojistaRepository.findById(lojaId)
-                .orElseThrow(() ->
-                        new RuntimeException("Loja não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Loja não encontrada"));
 
         avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);
@@ -71,7 +72,7 @@ public class AvaliacaoService {
         return repository.save(avaliacao);
     }
 
-    public void deletar(String id) {
+    public void deletar(UUID id) {
 
         Avaliacao avaliacao = repository.findById(id)
                 .orElseThrow(() ->

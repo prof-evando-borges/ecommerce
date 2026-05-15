@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class CategoriaService {
         return repository.findAll();
     }
 
-    public Categoria buscarPorId(String id) {
+    public Categoria buscarPorId(UUID id) {
         return repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Categoria não encontrada para o ID: " + id));
     }
@@ -44,7 +45,7 @@ public class CategoriaService {
     }
 
     @Transactional
-    public void deletar(String id) {
+    public void deletar(UUID id) {
         Categoria categoria = buscarPorId(id);
         repository.delete(categoria);
     }

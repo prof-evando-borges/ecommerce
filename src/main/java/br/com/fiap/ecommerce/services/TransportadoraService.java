@@ -7,14 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TransportadoraService {
     @Autowired
     private TransportadoraRepository repository;
 
-    public void salvar(Transportadora transportadora){
-        Transportadora obj = repository.findById(transportadora.getId()).orElseThrow(() -> new TransportadoraException("Transportadora não encontrada"));
+    public void criar(Transportadora transportadora){
+        repository.save(transportadora);
+    }
+
+    public void atualizar(Transportadora transportadora, UUID id){
+        Transportadora obj = repository.findById(id).orElseThrow(() -> new TransportadoraException("Transportadora não encontrada"));
         repository.save(obj);
     }
 
@@ -23,12 +28,12 @@ public class TransportadoraService {
         return list;
     }
 
-    public Transportadora buscarPorId(Long Id){
+    public Transportadora buscarPorId(UUID Id){
         Transportadora obj = repository.findById(Id).orElseThrow(() -> new TransportadoraException("Transportadora não encontrada"));
         return obj;
     }
 
-    public void deleteById(Long id){
+    public void deleteById(UUID id){
         Transportadora obj = repository.findById(id).orElseThrow(() -> new TransportadoraException("Transportadora não encontrada"));
         repository.deleteById(obj.getId());
     }
