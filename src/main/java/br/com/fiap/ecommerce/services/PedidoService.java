@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +33,7 @@ public class PedidoService {
         return repository.save(pedido);
     }
 
-    public Pedido buscarPorId(String id) {
+    public Pedido buscarPorId(Long id) {
         Pedido pedido = (Pedido) repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado com o número: " + id));
         return pedido;

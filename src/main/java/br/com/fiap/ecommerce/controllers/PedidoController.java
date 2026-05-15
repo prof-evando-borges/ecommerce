@@ -23,7 +23,7 @@ public class PedidoController {
 
 
     @PostMapping
-    public Pedido salvar(@RequestBody Pedido pedido) {
+    public Pedido salvar(@RequestBody Pedido pedido) throws InterruptedException {
         return pedidoService.salvar(pedido);
     }
 }

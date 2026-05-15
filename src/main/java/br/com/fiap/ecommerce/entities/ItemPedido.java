@@ -34,4 +34,12 @@ public class ItemPedido {
 
     @Column(name = "QUANTIDADE", nullable = false)
     private Integer quantidade;
+
+    public Object getIdProduto() {
+        return null;
+    }
+
+    public Object getIdPedido() {
+        return null;
+    }
 }
