@@ -5,6 +5,7 @@ import br.com.fiap.ecommerce.services.PedidoService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/pedido")
@@ -17,7 +18,7 @@ public class PedidoController {
     }
 
     @GetMapping("/{id}")
-    public Pedido buscarPorId(@PathVariable Long id) {
+    public Pedido buscarPorId(@PathVariable UUID id) {
         return pedidoService.buscarPorId(id);
     }
 
