@@ -52,8 +52,12 @@ public class AvaliacaoService {
                     throw new RuntimeException("Cliente já avaliou esse produto");
                 });
 
-        if (avaliacao.getNota() < 0 || avaliacao.getNota() > 5) {
-            throw new RuntimeException("Nota deve estar entre 0 e 5");
+        if (avaliacao.getNotaProduto() < 1 || avaliacao.getNotaProduto() > 5) {
+            throw new RuntimeException("Nota do produto deve estar entre 1 e 5");
+        }
+
+        if (avaliacao.getNotaLoja() < 1 || avaliacao.getNotaLoja() > 5) {
+            throw new RuntimeException("Nota da loja deve estar entre 1 e 5");
         }
 
         Produto produto = produtoRepository.findById(produtoId)
