@@ -40,11 +40,6 @@ public class ComentarioService {
         Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
                 .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
 
-        if (!avaliacao.getCliente().getId()
-                .equals(comentario.getCliente().getId())) {
-
-            throw new RuntimeException("Cliente não pode comentar avaliação de outro cliente");
-        }
 
         if (comentario.getComentario() == null || comentario.getComentario().trim().isEmpty()) {
             throw new RuntimeException("Comentário não pode ser vazio");
