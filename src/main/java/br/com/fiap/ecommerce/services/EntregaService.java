@@ -38,7 +38,7 @@ public class EntregaService {
     public void atualizaTransportadora(UUID idTransportadora, UUID id){
         Entrega entrega = repository.findById(id).orElseThrow(()-> new EntregaException("Entrega não encontrado"));
         Transportadora transportadora = transportadoraRepository.findById(id).orElseThrow(()-> new TransportadoraException("Transportadora não encontrado"));
-        entrega.setTransportadoraId(idTransportadora);
+        entrega.setTransportadora(transportadora);
     }
 
     public void atualizarStatus(StatusEnum status, UUID Id) {

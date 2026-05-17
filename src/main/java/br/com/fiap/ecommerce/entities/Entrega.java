@@ -8,16 +8,18 @@ import lombok.Data;
 import java.util.UUID;
 
 @Entity
-@Table(name ="TB_ENTREGA")
+@Table(name = "TB_ENTREGA")
 @Data
 public class Entrega {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ID")
     private UUID id;
 
-    @NotBlank(message = "O status deve ser informado")
+    @NotNull(message = "O status deve ser informado")
     @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
     @NotNull(message = "O valor do frete deve ser informado")
@@ -26,27 +28,27 @@ public class Entrega {
     private Double valorFrete;
 
     @NotNull(message = "O prazo deve ser informado")
-    @Column(name = "PRAZO_DIAS", nullable = false)
     @Min(value = 1, message = "O prazo de dias deve ser ao menos 1 dia")
-    private int prazoDias;
+    @Column(name = "PRAZO_DIAS", nullable = false)
+    private Integer prazoDias;
 
-    @NotBlank(message = "O ID do pedido deve ser informado")
-    @Column(name = "ID_PEDIDO", nullable = false)
-    private int pedidoId;
+    @NotNull(message = "O pedido é obrigatório")
+    @ManyToOne
+    @JoinColumn(name = "ID_PEDIDO", nullable = false)
+    private Pedido pedido;
 
-    @NotBlank(message = "O ID da transportadora deve ser informado")
-    @Column(name = "ID_TRANSPORTADORA", nullable = false)
-    private UUID transportadoraId;
+    @NotNull(message = "A transportadora é obrigatória")
+    @ManyToOne
+    @JoinColumn(name = "ID_TRANSPORTADORA", nullable = false)
+    private Transportadora transportadora;
 
-    public Entrega(){}
+    public Entrega() {}
 
-    public Entrega(StatusEnum status, Double valorFrete, int prazoDias, int pedidoId, UUID transportadoraId) {
+    public Entrega(StatusEnum status, Double valorFrete, Integer prazoDias, Pedido pedido, Transportadora transportadora) {
         this.status = status;
         this.valorFrete = valorFrete;
         this.prazoDias = prazoDias;
-        this.pedidoId = pedidoId;
-        this.transportadoraId = transportadoraId;
+        this.pedido = pedido;
+        this.transportadora = transportadora;
     }
-
-
 }
