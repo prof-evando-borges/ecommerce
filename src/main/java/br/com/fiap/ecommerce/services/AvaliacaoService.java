@@ -52,22 +52,20 @@ public class AvaliacaoService {
                     throw new RuntimeException("Cliente já avaliou esse produto");
                 });
 
-        if (avaliacao.getNotaProduto() < 1 || avaliacao.getNotaProduto() > 5) {
-            throw new RuntimeException("Nota do produto deve estar entre 1 e 5");
+        if (avaliacao.getNotaProduto() < 1 || avaliacao.getNotaProduto() > 5) {throw new RuntimeException("Nota do produto deve estar entre 1 e 5");
         }
 
-        if (avaliacao.getNotaLoja() < 1 || avaliacao.getNotaLoja() > 5) {
-            throw new RuntimeException("Nota da loja deve estar entre 1 e 5");
+        if (avaliacao.getNotaLoja() < 1 || avaliacao.getNotaLoja() > 5) {throw new RuntimeException("Nota da loja deve estar entre 1 e 5");
         }
 
-        Produto produto = produtoRepository.findById(produtoId)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        Produto produto = produtoRepository.findById(produtoId).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        Cliente cliente = clienteRepository.findById(clienteId).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        Lojista lojista = lojistaRepository.findById(lojaId)
-                .orElseThrow(() -> new RuntimeException("Loja não encontrada"));
+        Lojista lojista = lojistaRepository.findById(lojaId).orElseThrow(() -> new RuntimeException("Loja não encontrada"));
+
+        if (cliente.getEmail().equals(lojista.getEmail())) {throw new RuntimeException("Cliente não pode avaliar sua própria loja");
+        }
 
         avaliacao.setProduto(produto);
         avaliacao.setCliente(cliente);
@@ -78,9 +76,7 @@ public class AvaliacaoService {
 
     public void deletar(UUID id) {
 
-        Avaliacao avaliacao = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Avaliação não encontrada"));
+        Avaliacao avaliacao = repository.findById(id).orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
 
         repository.delete(avaliacao);
     }
