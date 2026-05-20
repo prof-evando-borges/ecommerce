@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
-@RestController(value = "/api/v1/entregas")
+@RestController
+@RequestMapping(value = "/api/v1/entregas")
 public class EntregaController {
 
     @Autowired
@@ -26,6 +26,13 @@ public class EntregaController {
         service.criar(obj);
         return ResponseEntity.ok().body(obj);
     }
+
+    // QUAL A DIFERENCA??
+    /*@PostMapping()
+    public ResponseEntity<Entrega> criarEntrega(@RequestBody @Valid Entrega obj){
+        service.salvar(obj);
+        return ResponseEntity.ok().body(obj);
+    }*/
 
     @GetMapping
     public ResponseEntity<List<Entrega>> findAll(){
@@ -49,12 +56,6 @@ public class EntregaController {
     public ResponseEntity<Void> deleteById(@PathVariable UUID id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping()
-    public ResponseEntity<Entrega> criarEntrega(@RequestBody @Valid Entrega obj){
-        service.salvar(obj);
-        return ResponseEntity.ok().body(obj);
     }
 
     @PutMapping(value = "/{id}/atualiza-transportadora")

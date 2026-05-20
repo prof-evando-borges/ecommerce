@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Comentario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
     private UUID id;
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
-@RestController(value = "/api/v1/transportadoras")
+@RestController
+@RequestMapping("/api/v1/transportadoras")
 public class TransporteController {
 
     @Autowired

@@ -24,7 +24,7 @@ public class Produto {
     @Column(name = "NOME_PRODUTO", nullable = false, length = 150)
     private String nomeProduto;
 
-    @Column(name = "DESCRICAO_PRODUTO", columnDefinition = "TEXT")
+    @Column(name = "DESCRICAO_PRODUTO", columnDefinition = "VARCHAR2(4000)")
     private String descricaoProduto;
 
     @NotNull(message = "O preço do produto deve ser informado!")

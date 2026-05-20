@@ -11,5 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface EstoqueRepository extends JpaRepository<Estoque, UUID> {
-    List<Estoque> findByResponsavelId(Long idResponsavel);
+    List<Estoque> findByLojistaId(UUID idLojista);
 }

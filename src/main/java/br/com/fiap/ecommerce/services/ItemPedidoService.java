@@ -13,39 +13,48 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ItemPedidoService {
 
-    private static ItemPedidoRepository repository;
-
-    @Transactional
-    public static ItemPedido salvar(ItemPedido item) {
-        if (item.getQuantidade() <= 0) {
-            throw new IllegalArgumentException("A quantidade do item deve ser maior que zero.");
-        }
-
-        if (item.getIdProduto() == null || item.getIdPedido() == null) {
-            throw new IllegalArgumentException("Produto e Pedido são obrigatórios para o item.");
-        }
-
-        if (item.getValorItem() == null || item.getValorItem() <= 0) {
-            throw new IllegalArgumentException("O valor do item deve ser positivo.");
-        }
-
-        return repository.save(item);
-    }
+    private final ItemPedidoRepository itemPedidoRepository;
 
     public List<ItemPedido> listarTodos() {
-        return repository.findAll();
+        return itemPedidoRepository.findAll();
+    }
+
+    public List<ItemPedido> listarPorPedido(UUID pedidoId) {
+        return itemPedidoRepository.findByPedidoId(pedidoId);
     }
 
     public ItemPedido buscarPorId(UUID id) {
-        return repository.findById(String.valueOf(id))
-                .orElseThrow(() -> new IllegalArgumentException("Item não encontrado com o ID: " + id));
+        return itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Item de pedido não encontrado para o ID: " + id));
+    }
+
+    @Transactional
+    public ItemPedido salvar(ItemPedido itemPedido) {
+        if (itemPedido.getPedido() == null || itemPedido.getPedido().getId() == null) {
+            throw new IllegalArgumentException("O pedido é obrigatório.");
+        }
+        if (itemPedido.getProduto() == null || itemPedido.getProduto().getId() == null) {
+            throw new IllegalArgumentException("O produto é obrigatório.");
+        }
+        if (itemPedido.getQuantidade() == null || itemPedido.getQuantidade() < 1) {
+            throw new IllegalArgumentException("A quantidade deve ser ao menos 1.");
+        }
+        if (itemPedido.getValorItem() == null || itemPedido.getValorItem() <= 0) {
+            throw new IllegalArgumentException("O valor do item deve ser maior que zero.");
+        }
+        return itemPedidoRepository.save(itemPedido);
+    }
+
+    @Transactional
+    public ItemPedido atualizar(UUID id, ItemPedido itemPedido) {
+        buscarPorId(id);
+        itemPedido.setId(id);
+        return itemPedidoRepository.save(itemPedido);
     }
 
     @Transactional
     public void deletar(UUID id) {
-        if (!repository.existsById(id)) {
-            throw new IllegalArgumentException("Item não encontrado.");
-        }
-        repository.deleteById(id);
+        ItemPedido item = buscarPorId(id);
+        itemPedidoRepository.delete(item);
     }
 }

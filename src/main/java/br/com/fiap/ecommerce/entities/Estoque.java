@@ -26,8 +26,8 @@ public class Estoque {
     private Set<Setor> setores = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "ID_RESPONSAVEL")
-    @NotBlank(message = "o Id do Lojista não pode ser Nulo ou estar em Branco")
-    private Lojista idLojista;
+    @NotNull(message = "O lojista responsável pelo estoque não pode ser nulo")
+    private Lojista lojista;
     @NotNull
     @Column(name = "PESO_TOTAL")
     @DecimalMin(value = "0.1", message = "O valor de PESO TOTAL não pode ser Nulo")
