@@ -1,33 +1,38 @@
 package br.com.fiap.ecommerce.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "ITEMPEDIDO")
-@Getter
-@Setter
 @Data
 public class ItemPedido {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "ID")
+    private UUID id;
 
-    @Column(name = "ID", nullable = false)
-    private String id;
+    @NotNull(message = "O pedido é obrigatório")
+    @ManyToOne
+    @JoinColumn(name = "ID_PEDIDO", nullable = false)
+    private Pedido pedido;
 
-    @Column(name = "ID_PRODUTO", nullable = false)
-    private String idProduto;
+    @NotNull(message = "O produto é obrigatório")
+    @ManyToOne
+    @JoinColumn(name = "ID_PRODUTO", nullable = false)
+    private Produto produto;
 
-    @Column(name = "ID_PEDIDO", nullable = false)
-    private String idPedido;
-
+    @Positive(message = "O valor do item deve ser maior que zero")
     @Column(name = "VALOR_ITEM", nullable = false)
     private Double valorItem;
 
+    @PositiveOrZero(message = "A quantidade não pode ser negativa")
     @Column(name = "QUANTIDADE", nullable = false)
-    private int quantidade;
+    private Integer quantidade;
 }

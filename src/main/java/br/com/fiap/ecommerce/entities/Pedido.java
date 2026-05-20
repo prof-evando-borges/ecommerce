@@ -1,27 +1,27 @@
 package br.com.fiap.ecommerce.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "PEDIDO")
-@Getter
-@Setter
 @Data
 public class Pedido {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ID")
-    private String id;
+    private UUID id;
 
-    @Column(name = "ID_CLIENTE", nullable = false)
-    private String idCliente;
+    @NotNull(message = "O cliente é obrigatório")
+    @ManyToOne
+    @JoinColumn(name = "ID_CLIENTE", nullable = false)
+    private Cliente cliente;
 
     @Column(name = "NUMERO_PEDIDO", nullable = false)
     private Integer numeroPedido;
@@ -29,6 +29,7 @@ public class Pedido {
     @Column(name = "DATA_ENTREGA", nullable = false)
     private Date dataEntrega;
 
+    @Positive(message = "O valor final deve ser maior que zero")
     @Column(name = "VALOR_FINAL", nullable = false)
-    private double valorFinal;
+    private Double valorFinal;
 }

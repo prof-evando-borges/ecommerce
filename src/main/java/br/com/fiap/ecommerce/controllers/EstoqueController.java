@@ -17,11 +17,11 @@ public class EstoqueController {
 
     @GetMapping("/{id}")
     public Estoque buscarPorId(@PathVariable UUID id){
-        return estoqueService.consutarEstoque(id);
+        return estoqueService.consultarEstoque(id);
     }
 
     @GetMapping("/lojista/{id}")
-    public List<Estoque> buscarPorIdDoResponsavel(@PathVariable Long id){
+    public List<Estoque> buscarPorIdDoResponsavel(@PathVariable UUID id){
         return estoqueService.consultarEstoquesPorResponsavel(id);
     }
 

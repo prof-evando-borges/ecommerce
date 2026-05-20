@@ -64,7 +64,8 @@ public class PagamentoService {
 
         if (pagamento.getCartao() != null && pagamento.getCartao().getId() != null) {
             Cartao cartao = cartaoRepository.findById(pagamento.getCartao().getId())
-                    .orElseThrow(() -> new CartaoException("Cartão não encontrado com id: " + pagamento.getCartao().getId()));
+                    .orElseThrow(() -> new CartaoException("Cartão não encontrado com id: "
+                            + pagamento.getCartao().getId()));
             if (!cartao.isAtivo()) {
                 throw new CartaoException("O cartão informado está inativo");
             }
@@ -106,10 +107,12 @@ public class PagamentoService {
 
     public void deletar(UUID id) {
         Pagamento pagamento = buscarPorId(id);
+
         if (pagamento.getStatus() == StatusPagamentoEnum.APROVADO) {
             throw new PagamentoException(
                     "Não é possível excluir um pagamento aprovado. Utilize o cancelamento ou estorno.");
         }
+
         pagamentoRepository.delete(pagamento);
     }
 
@@ -121,6 +124,7 @@ public class PagamentoService {
             throw new PagamentoException(
                     "É necessário informar um cartão para o método de pagamento selecionado");
         }
+
         if (!requerCartao && pagamento.getCartao() != null && pagamento.getCartao().getId() != null) {
             throw new PagamentoException("O método de pagamento selecionado não utiliza cartão");
         }
@@ -128,7 +132,8 @@ public class PagamentoService {
 
     private BigDecimal calcularDesconto(BigDecimal valorOriginal, Cupom cupom) {
         if (cupom.getTipoDesconto() == TipoDescontoEnum.PERCENTUAL) {
-            return valorOriginal.multiply(cupom.getValorDesconto())
+            return valorOriginal
+                    .multiply(cupom.getValorDesconto())
                     .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
         }
         return cupom.getValorDesconto().min(valorOriginal);

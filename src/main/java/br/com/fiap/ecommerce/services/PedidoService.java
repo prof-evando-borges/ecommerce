@@ -1,38 +1,57 @@
 package br.com.fiap.ecommerce.services;
 
-import br.com.fiap.ecommerce.entities.Categoria;
 import br.com.fiap.ecommerce.entities.Pedido;
-import br.com.fiap.ecommerce.repositories.CategoriaRepository;
 import br.com.fiap.ecommerce.repositories.PedidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class PedidoService {
 
-    private PedidoRepository repository;
+    private final PedidoRepository pedidoRepository;
+
+    public List<Pedido> listarTodos() {
+        return pedidoRepository.findAll();
+    }
+
+    public List<Pedido> listarPorCliente(UUID clienteId) {
+        return pedidoRepository.findByClienteId(clienteId);
+    }
+
+    public Pedido buscarPorId(UUID id) {
+        return pedidoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado para o ID: " + id));
+    }
 
     @Transactional
     public Pedido salvar(Pedido pedido) {
-        if (pedido.getNumeroPedido() == null || pedido.getNumeroPedido() == 0) {
-            throw new IllegalArgumentException("O número do pedido é obrigatório.");
+        if (pedido.getCliente() == null || pedido.getCliente().getId() == null) {
+            throw new IllegalArgumentException("O cliente é obrigatório.");
         }
-
-        Optional<Pedido> existente = repository.findByNumeroPedido(pedido.getNumeroPedido());
-        if (existente.isPresent() && !existente.get().getNumeroPedido().equals(pedido.getNumeroPedido())) {
-            throw new IllegalArgumentException("Já existe um pedido cadastrada com este numero.");
+        if (pedido.getValorFinal() == null || pedido.getValorFinal() <= 0) {
+            throw new IllegalArgumentException("O valor final deve ser maior que zero.");
         }
-
-        return repository.save(pedido);
+        if (pedido.getDataEntrega() == null) {
+            throw new IllegalArgumentException("A data de entrega é obrigatória.");
+        }
+        return pedidoRepository.save(pedido);
     }
 
-    public Pedido buscarPorId(String id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado com o número: " + id));
+    @Transactional
+    public Pedido atualizar(UUID id, Pedido pedido) {
+        buscarPorId(id);
+        pedido.setId(id);
+        return pedidoRepository.save(pedido);
+    }
+
+    @Transactional
+    public void deletar(UUID id) {
+        Pedido pedido = buscarPorId(id);
+        pedidoRepository.delete(pedido);
     }
 }

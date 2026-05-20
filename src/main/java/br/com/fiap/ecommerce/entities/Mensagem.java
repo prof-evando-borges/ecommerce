@@ -43,7 +43,4 @@ public class Mensagem {
     public void prePersist() {
         dataEnvio = LocalDateTime.now();
     }
-
-    public void setId(String id) {
-    }
 }

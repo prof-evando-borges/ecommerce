@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "TB_PAGAMENTO")
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Pagamento {
 
     @Id
@@ -55,17 +59,11 @@ public class Pagamento {
     @Column(name = "STATUS", nullable = false, length = 20)
     private StatusPagamentoEnum status;
 
-    @Column(name = "DATA_PAGAMENTO", updatable = false)
-    private LocalDateTime dataPagamento;
+    @CreatedDate
+    @Column(name = "DATA_CRIACAO", nullable = false, updatable = false)
+    private LocalDateTime dataCriacao;
 
-    @PrePersist
-    public void prePersist() {
-        dataPagamento = LocalDateTime.now();
-        if (status == null) {
-            status = StatusPagamentoEnum.PENDENTE;
-        }
-        if (valorDesconto == null) {
-            valorDesconto = BigDecimal.ZERO;
-        }
-    }
+    @LastModifiedDate
+    @Column(name = "DATA_ATUALIZACAO", nullable = false)
+    private LocalDateTime dataAtualizacao;
 }
