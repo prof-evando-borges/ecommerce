@@ -34,7 +34,3 @@ build/
 
 ### Credenciais e configurações sensíveis ###
 src/main/resources/application.properties
-
-### IntelliJ IDEA - misc e compiler ###
-.idea/misc.xml
-.idea/compiler.xml
