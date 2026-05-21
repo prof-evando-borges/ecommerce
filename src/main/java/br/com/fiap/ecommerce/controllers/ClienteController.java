@@ -3,6 +3,7 @@ package br.com.fiap.ecommerce.controllers;
 import br.com.fiap.ecommerce.entities.Cliente;
 import br.com.fiap.ecommerce.models.AlterarSenhaRequest;
 import br.com.fiap.ecommerce.models.AutenticarRequest;
+import br.com.fiap.ecommerce.models.JwtResponse;
 import br.com.fiap.ecommerce.services.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/clientes")
 public class ClienteController {
-    private final ClienteService clienteService;
 
+    private final ClienteService clienteService;
 
     public ClienteController(ClienteService clienteService) {
         this.clienteService = clienteService;
@@ -57,10 +58,11 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Cliente> autenticar(@RequestBody AutenticarRequest request) {
+    public ResponseEntity<JwtResponse> autenticar(@RequestBody AutenticarRequest request) {
         try {
-            Cliente cliente = clienteService.autenticar(request.getEmail(), request.getSenha());
-            return ResponseEntity.ok(cliente);
+            String token = clienteService.autenticar(request.getEmail(), request.getSenha());
+            Cliente cliente = clienteService.buscarPorEmail(request.getEmail());
+            return ResponseEntity.ok(new JwtResponse(token, cliente.getId(), cliente.getNome(), cliente.getEmail(), "ROLE_CLIENTE"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

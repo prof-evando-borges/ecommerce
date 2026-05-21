@@ -1,9 +1,9 @@
 package br.com.fiap.ecommerce.controllers;
 
-import br.com.fiap.ecommerce.entities.Cliente;
 import br.com.fiap.ecommerce.entities.Lojista;
 import br.com.fiap.ecommerce.models.AlterarSenhaRequest;
 import br.com.fiap.ecommerce.models.AutenticarRequest;
+import br.com.fiap.ecommerce.models.JwtResponse;
 import br.com.fiap.ecommerce.services.LojistaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +15,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/lojistas")
 public class LojistaController {
-    private final LojistaService lojistaService;
 
+    private final LojistaService lojistaService;
 
     public LojistaController(LojistaService lojistaService) {
         this.lojistaService = lojistaService;
@@ -58,13 +58,13 @@ public class LojistaController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Lojista> autenticar(@RequestBody AutenticarRequest request) {
+    public ResponseEntity<JwtResponse> autenticar(@RequestBody AutenticarRequest request) {
         try {
-            Lojista lojista = lojistaService.autenticar(request.getEmail(), request.getSenha());
-            return ResponseEntity.ok(lojista);
+            String token = lojistaService.autenticar(request.getEmail(), request.getSenha());
+            Lojista lojista = lojistaService.buscarPorEmail(request.getEmail());
+            return ResponseEntity.ok(new JwtResponse(token, lojista.getId(), lojista.getNome(), lojista.getEmail(), "ROLE_LOJISTA"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
 }
