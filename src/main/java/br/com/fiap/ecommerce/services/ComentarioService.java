@@ -37,13 +37,13 @@ public class ComentarioService {
 
         UUID avaliacaoId = comentario.getAvaliacao().getId();
 
-        Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId)
-                .orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
+        Avaliacao avaliacao = avaliacaoRepository.findById(avaliacaoId).orElseThrow(() -> new RuntimeException("Avaliação não encontrada"));
 
 
-        if (comentario.getComentario() == null || comentario.getComentario().trim().isEmpty()) {
-            throw new RuntimeException("Comentário não pode ser vazio");
+        if (comentario.getComentario() == null || comentario.getComentario().trim().isEmpty()) {throw new RuntimeException("Comentário não pode ser vazio");
         }
+
+        repository.findByAvaliacao_Id(avaliacaoId).stream().findAny().ifPresent(c -> { throw new RuntimeException("Avaliação já possui comentário"); });
 
         comentario.setAvaliacao(avaliacao);
 
