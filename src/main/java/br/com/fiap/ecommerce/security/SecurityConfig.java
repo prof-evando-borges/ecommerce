@@ -43,16 +43,6 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        // Endpoints exclusivos de lojistas
-                        .requestMatchers(
-                                "/api/v1/produtos/**",
-                                "/api/v1/estoques/**",
-                                "/api/v1/setores/**",
-                                "/api/v1/categorias/**",
-                                "/api/v1/unidades-peso/**",
-                                "/api/v1/unidades-tamanho/**",
-                                "/api/v1/transportadoras/**"
-                        ).hasRole("LOJISTA")
                         // Demais endpoints exigem autenticação
                         .anyRequest().authenticated()
                 )

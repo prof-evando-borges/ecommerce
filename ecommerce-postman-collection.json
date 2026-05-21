@@ -7,6 +7,7 @@
   },
   "variable": [
     { "key": "base_url", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
     { "key": "cliente_id", "value": "COLE_AQUI_O_ID_DO_CLIENTE" },
     { "key": "lojista_id", "value": "COLE_AQUI_O_ID_DO_LOJISTA" },
     { "key": "produto_id", "value": "COLE_AQUI_O_ID_DO_PRODUTO" },
@@ -28,203 +29,314 @@
   ],
   "item": [
     {
+      "name": "00 - Autenticacao",
+      "description": "Endpoints publicos de login. Apos executar, o token JWT e salvo automaticamente na variavel {{token}} da colecao.",
+      "item": [
+        {
+          "name": "Login Cliente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    pm.collectionVariables.set('cliente_id', json.id);",
+                  "    console.log('Token JWT salvo com sucesso. Role: ' + json.role);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/clientes/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "clientes", "login"]
+            },
+            "description": "Autentica um cliente e retorna o token JWT. O token e salvo automaticamente na variavel {{token}}.\n\nResposta esperada:\n- token: JWT Bearer token\n- tipo: Bearer\n- id: UUID do cliente\n- nome: nome do cliente\n- email: email do cliente\n- role: ROLE_CLIENTE"
+          }
+        },
+        {
+          "name": "Login Lojista",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    pm.collectionVariables.set('lojista_id', json.id);",
+                  "    console.log('Token JWT salvo com sucesso. Role: ' + json.role);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/lojistas/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "lojistas", "login"]
+            },
+            "description": "Autentica um lojista e retorna o token JWT. O token e salvo automaticamente na variavel {{token}}.\n\nResposta esperada:\n- token: JWT Bearer token\n- tipo: Bearer\n- id: UUID do lojista\n- nome: nome do lojista\n- email: email do lojista\n- role: ROLE_LOJISTA"
+          }
+        }
+      ]
+    },
+    {
       "name": "01 - Clientes",
       "item": [
-        { "name": "Listar clientes", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/clientes", "host": ["{{base_url}}"], "path": ["api","v1","clientes"] } } },
-        { "name": "Buscar cliente por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/clientes/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","clientes","{{cliente_id}}"] } } },
-        { "name": "Criar cliente", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cpf\": \"12345678901\",\n  \"nome\": \"Maria Silva\",\n  \"endereco\": \"Rua das Flores, 123, Sao Paulo - SP\",\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes", "host": ["{{base_url}}"], "path": ["api","v1","clientes"] } } },
-        { "name": "Atualizar cliente", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{cliente_id}}\",\n  \"cpf\": \"12345678901\",\n  \"nome\": \"Maria Silva Atualizada\",\n  \"endereco\": \"Av. Paulista, 1000, Sao Paulo - SP\",\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes", "host": ["{{base_url}}"], "path": ["api","v1","clientes"] } } },
-        { "name": "Alterar senha do cliente", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"maria.silva@email.com\",\n  \"senhaAtual\": \"senha123\",\n  \"novaSenha\": \"novaSenha456\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes/senha", "host": ["{{base_url}}"], "path": ["api","v1","clientes","senha"] } } },
-        { "name": "Login cliente", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes/login", "host": ["{{base_url}}"], "path": ["api","v1","clientes","login"] } } },
-        { "name": "Deletar cliente", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/clientes/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","clientes","{{cliente_id}}"] } } }
+        { "name": "Listar clientes", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/clientes", "host": ["{{base_url}}"], "path": ["api","v1","clientes"] } } },
+        { "name": "Buscar cliente por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/clientes/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","clientes","{{cliente_id}}"] } } },
+        { "name": "Criar cliente (publico)", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cpf\": \"12345678901\",\n  \"nome\": \"Maria Silva\",\n  \"endereco\": \"Rua das Flores, 123, Sao Paulo - SP\",\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes", "host": ["{{base_url}}"], "path": ["api","v1","clientes"] } } },
+        { "name": "Atualizar cliente", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{cliente_id}}\",\n  \"cpf\": \"12345678901\",\n  \"nome\": \"Maria Silva Atualizada\",\n  \"endereco\": \"Av. Paulista, 1000, Sao Paulo - SP\",\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes", "host": ["{{base_url}}"], "path": ["api","v1","clientes"] } } },
+        { "name": "Alterar senha do cliente", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"maria.silva@email.com\",\n  \"senhaAtual\": \"senha123\",\n  \"novaSenha\": \"novaSenha456\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes/senha", "host": ["{{base_url}}"], "path": ["api","v1","clientes","senha"] } } },
+        {
+          "name": "Login cliente (retorna JWT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    pm.collectionVariables.set('cliente_id', json.id);",
+                  "    console.log('Token JWT salvo. Role: ' + json.role);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"maria.silva@email.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/clientes/login", "host": ["{{base_url}}"], "path": ["api","v1","clientes","login"] } }
+        },
+        { "name": "Deletar cliente", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/clientes/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","clientes","{{cliente_id}}"] } } }
       ]
     },
     {
       "name": "02 - Lojistas",
       "item": [
-        { "name": "Listar lojistas", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/lojistas", "host": ["{{base_url}}"], "path": ["api","v1","lojistas"] } } },
-        { "name": "Buscar lojista por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/lojistas/{{lojista_id}}", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","{{lojista_id}}"] } } },
-        { "name": "Criar lojista", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cnpj\": \"12345678000195\",\n  \"nome\": \"Tech Store LTDA\",\n  \"endereco\": \"Av. Tecnologia, 500, Sao Paulo - SP\",\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\",\n  \"tipoEmpresa\": \"LTDA\",\n  \"categoriaEmpresa\": \"Eletronicos\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas", "host": ["{{base_url}}"], "path": ["api","v1","lojistas"] } } },
-        { "name": "Atualizar lojista", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{lojista_id}}\",\n  \"cnpj\": \"12345678000195\",\n  \"nome\": \"Tech Store Atualizada\",\n  \"endereco\": \"Av. Tecnologia, 999, Sao Paulo - SP\",\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\",\n  \"tipoEmpresa\": \"LTDA\",\n  \"categoriaEmpresa\": \"Eletronicos\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas", "host": ["{{base_url}}"], "path": ["api","v1","lojistas"] } } },
-        { "name": "Alterar senha do lojista", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"contato@techstore.com\",\n  \"senhaAtual\": \"senha123\",\n  \"novaSenha\": \"novaSenha456\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas/senha", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","senha"] } } },
-        { "name": "Login lojista", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas/login", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","login"] } } },
-        { "name": "Deletar lojista", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/lojistas/{{lojista_id}}", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","{{lojista_id}}"] } } }
+        { "name": "Listar lojistas", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/lojistas", "host": ["{{base_url}}"], "path": ["api","v1","lojistas"] } } },
+        { "name": "Buscar lojista por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/lojistas/{{lojista_id}}", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","{{lojista_id}}"] } } },
+        { "name": "Criar lojista (publico)", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cnpj\": \"12345678000195\",\n  \"nome\": \"Tech Store LTDA\",\n  \"endereco\": \"Av. Tecnologia, 500, Sao Paulo - SP\",\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\",\n  \"tipoEmpresa\": \"LTDA\",\n  \"categoriaEmpresa\": \"Eletronicos\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas", "host": ["{{base_url}}"], "path": ["api","v1","lojistas"] } } },
+        { "name": "Atualizar lojista", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{lojista_id}}\",\n  \"cnpj\": \"12345678000195\",\n  \"nome\": \"Tech Store Atualizada\",\n  \"endereco\": \"Av. Tecnologia, 999, Sao Paulo - SP\",\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\",\n  \"tipoEmpresa\": \"LTDA\",\n  \"categoriaEmpresa\": \"Eletronicos\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas", "host": ["{{base_url}}"], "path": ["api","v1","lojistas"] } } },
+        { "name": "Alterar senha do lojista", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"contato@techstore.com\",\n  \"senhaAtual\": \"senha123\",\n  \"novaSenha\": \"novaSenha456\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas/senha", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","senha"] } } },
+        {
+          "name": "Login lojista (retorna JWT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    pm.collectionVariables.set('lojista_id', json.id);",
+                  "    console.log('Token JWT salvo. Role: ' + json.role);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"contato@techstore.com\",\n  \"senha\": \"senha123\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/lojistas/login", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","login"] } }
+        },
+        { "name": "Deletar lojista", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/lojistas/{{lojista_id}}", "host": ["{{base_url}}"], "path": ["api","v1","lojistas","{{lojista_id}}"] } } }
       ]
     },
     {
       "name": "03 - Categorias",
       "item": [
-        { "name": "Listar categorias", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/categorias", "host": ["{{base_url}}"], "path": ["api","v1","categorias"] } } },
-        { "name": "Buscar categoria por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/categorias/{{categoria_id}}", "host": ["{{base_url}}"], "path": ["api","v1","categorias","{{categoria_id}}"] } } },
-        { "name": "Criar categoria", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nomeCategoria\": \"Eletronicos\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/categorias", "host": ["{{base_url}}"], "path": ["api","v1","categorias"] } } },
-        { "name": "Atualizar categoria", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{categoria_id}}\",\n  \"nomeCategoria\": \"Eletronicos e Gadgets\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/categorias", "host": ["{{base_url}}"], "path": ["api","v1","categorias"] } } },
-        { "name": "Deletar categoria", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/categorias/{{categoria_id}}", "host": ["{{base_url}}"], "path": ["api","v1","categorias","{{categoria_id}}"] } } }
+        { "name": "Listar categorias", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/categorias", "host": ["{{base_url}}"], "path": ["api","v1","categorias"] } } },
+        { "name": "Buscar categoria por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/categorias/{{categoria_id}}", "host": ["{{base_url}}"], "path": ["api","v1","categorias","{{categoria_id}}"] } } },
+        { "name": "Criar categoria", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"nomeCategoria\": \"Eletronicos\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/categorias", "host": ["{{base_url}}"], "path": ["api","v1","categorias"] } } },
+        { "name": "Atualizar categoria", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{categoria_id}}\",\n  \"nomeCategoria\": \"Eletronicos e Gadgets\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/categorias", "host": ["{{base_url}}"], "path": ["api","v1","categorias"] } } },
+        { "name": "Deletar categoria", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/categorias/{{categoria_id}}", "host": ["{{base_url}}"], "path": ["api","v1","categorias","{{categoria_id}}"] } } }
       ]
     },
     {
       "name": "04 - Unidades de Peso",
       "item": [
-        { "name": "Listar unidades de peso", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/unidades-peso", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso"] } } },
-        { "name": "Buscar unidade de peso por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/unidades-peso/{{unidade_peso_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso","{{unidade_peso_id}}"] } } },
-        { "name": "Criar unidade de peso", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"unidadeMedidaPeso\": \"Quilograma (kg)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-peso", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso"] } } },
-        { "name": "Atualizar unidade de peso", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{unidade_peso_id}}\",\n  \"unidadeMedidaPeso\": \"Grama (g)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-peso", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso"] } } },
-        { "name": "Deletar unidade de peso", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/unidades-peso/{{unidade_peso_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso","{{unidade_peso_id}}"] } } }
+        { "name": "Listar unidades de peso", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/unidades-peso", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso"] } } },
+        { "name": "Buscar unidade de peso por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/unidades-peso/{{unidade_peso_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso","{{unidade_peso_id}}"] } } },
+        { "name": "Criar unidade de peso", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"unidadeMedidaPeso\": \"Quilograma (kg)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-peso", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso"] } } },
+        { "name": "Atualizar unidade de peso", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{unidade_peso_id}}\",\n  \"unidadeMedidaPeso\": \"Grama (g)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-peso", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso"] } } },
+        { "name": "Deletar unidade de peso", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/unidades-peso/{{unidade_peso_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-peso","{{unidade_peso_id}}"] } } }
       ]
     },
     {
       "name": "05 - Unidades de Tamanho",
       "item": [
-        { "name": "Listar unidades de tamanho", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho"] } } },
-        { "name": "Buscar unidade de tamanho por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho/{{unidade_tamanho_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho","{{unidade_tamanho_id}}"] } } },
-        { "name": "Criar unidade de tamanho", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"unidadeMedidaTamanho\": \"Centimetro (cm)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho"] } } },
-        { "name": "Atualizar unidade de tamanho", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{unidade_tamanho_id}}\",\n  \"unidadeMedidaTamanho\": \"Metro (m)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho"] } } },
-        { "name": "Deletar unidade de tamanho", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho/{{unidade_tamanho_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho","{{unidade_tamanho_id}}"] } } }
+        { "name": "Listar unidades de tamanho", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho"] } } },
+        { "name": "Buscar unidade de tamanho por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho/{{unidade_tamanho_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho","{{unidade_tamanho_id}}"] } } },
+        { "name": "Criar unidade de tamanho", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"unidadeMedidaTamanho\": \"Centimetro (cm)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho"] } } },
+        { "name": "Atualizar unidade de tamanho", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{unidade_tamanho_id}}\",\n  \"unidadeMedidaTamanho\": \"Metro (m)\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho"] } } },
+        { "name": "Deletar unidade de tamanho", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/unidades-tamanho/{{unidade_tamanho_id}}", "host": ["{{base_url}}"], "path": ["api","v1","unidades-tamanho","{{unidade_tamanho_id}}"] } } }
       ]
     },
     {
       "name": "06 - Produtos",
       "item": [
-        { "name": "Listar produtos", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/produtos", "host": ["{{base_url}}"], "path": ["api","v1","produtos"] } } },
-        { "name": "Buscar produto por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/produtos/{{produto_id}}", "host": ["{{base_url}}"], "path": ["api","v1","produtos","{{produto_id}}"] } } },
-        { "name": "Criar produto", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nomeProduto\": \"Notebook Gamer\",\n  \"descricaoProduto\": \"Notebook com processador i9, 32GB RAM e RTX 4080\",\n  \"preco\": 8999.90,\n  \"ativo\": true,\n  \"peso\": 2.5,\n  \"altura\": 2.5,\n  \"largura\": 35.0,\n  \"profundidade\": 25.0,\n  \"categoria\": { \"id\": \"{{categoria_id}}\" },\n  \"unidadeMedidaPeso\": { \"id\": \"{{unidade_peso_id}}\" },\n  \"unidadeMedidaTamanho\": { \"id\": \"{{unidade_tamanho_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/produtos", "host": ["{{base_url}}"], "path": ["api","v1","produtos"] } } },
-        { "name": "Atualizar produto", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{produto_id}}\",\n  \"nomeProduto\": \"Notebook Gamer Pro\",\n  \"descricaoProduto\": \"Notebook com processador i9, 64GB RAM e RTX 4090\",\n  \"preco\": 12999.90,\n  \"ativo\": true,\n  \"peso\": 2.5,\n  \"altura\": 2.5,\n  \"largura\": 35.0,\n  \"profundidade\": 25.0,\n  \"categoria\": { \"id\": \"{{categoria_id}}\" },\n  \"unidadeMedidaPeso\": { \"id\": \"{{unidade_peso_id}}\" },\n  \"unidadeMedidaTamanho\": { \"id\": \"{{unidade_tamanho_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/produtos", "host": ["{{base_url}}"], "path": ["api","v1","produtos"] } } },
-        { "name": "Deletar produto", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/produtos/{{produto_id}}", "host": ["{{base_url}}"], "path": ["api","v1","produtos","{{produto_id}}"] } } }
+        { "name": "Listar produtos", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/produtos", "host": ["{{base_url}}"], "path": ["api","v1","produtos"] } } },
+        { "name": "Buscar produto por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/produtos/{{produto_id}}", "host": ["{{base_url}}"], "path": ["api","v1","produtos","{{produto_id}}"] } } },
+        { "name": "Criar produto", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"nomeProduto\": \"Notebook Gamer\",\n  \"descricaoProduto\": \"Notebook com processador i9, 32GB RAM e RTX 4080\",\n  \"preco\": 8999.90,\n  \"ativo\": true,\n  \"peso\": 2.5,\n  \"altura\": 2.5,\n  \"largura\": 35.0,\n  \"profundidade\": 25.0,\n  \"categoria\": { \"id\": \"{{categoria_id}}\" },\n  \"unidadeMedidaPeso\": { \"id\": \"{{unidade_peso_id}}\" },\n  \"unidadeMedidaTamanho\": { \"id\": \"{{unidade_tamanho_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/produtos", "host": ["{{base_url}}"], "path": ["api","v1","produtos"] } } },
+        { "name": "Atualizar produto", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"id\": \"{{produto_id}}\",\n  \"nomeProduto\": \"Notebook Gamer Pro\",\n  \"descricaoProduto\": \"Notebook com processador i9, 64GB RAM e RTX 4090\",\n  \"preco\": 12999.90,\n  \"ativo\": true,\n  \"peso\": 2.5,\n  \"altura\": 2.5,\n  \"largura\": 35.0,\n  \"profundidade\": 25.0,\n  \"categoria\": { \"id\": \"{{categoria_id}}\" },\n  \"unidadeMedidaPeso\": { \"id\": \"{{unidade_peso_id}}\" },\n  \"unidadeMedidaTamanho\": { \"id\": \"{{unidade_tamanho_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/produtos", "host": ["{{base_url}}"], "path": ["api","v1","produtos"] } } },
+        { "name": "Deletar produto", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/produtos/{{produto_id}}", "host": ["{{base_url}}"], "path": ["api","v1","produtos","{{produto_id}}"] } } }
       ]
     },
     {
       "name": "07 - Avaliacoes",
       "item": [
-        { "name": "Listar avaliacoes", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/avaliacoes", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes"] } } },
-        { "name": "Buscar avaliacao por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/avaliacoes/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes","{{avaliacao_id}}"] } } },
-        { "name": "Criar avaliacao", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"produto\": { \"id\": \"{{produto_id}}\" },\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"lojista\": { \"id\": \"{{lojista_id}}\" },\n  \"notaProduto\": 5,\n  \"notaLoja\": 4\n}" }, "url": { "raw": "{{base_url}}/api/v1/avaliacoes", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes"] } } },
-        { "name": "Deletar avaliacao", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/avaliacoes/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes","{{avaliacao_id}}"] } } }
+        { "name": "Listar avaliacoes", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/avaliacoes", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes"] } } },
+        { "name": "Buscar avaliacao por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/avaliacoes/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes","{{avaliacao_id}}"] } } },
+        { "name": "Criar avaliacao", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"produto\": { \"id\": \"{{produto_id}}\" },\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"lojista\": { \"id\": \"{{lojista_id}}\" },\n  \"notaProduto\": 5,\n  \"notaLoja\": 4\n}" }, "url": { "raw": "{{base_url}}/api/v1/avaliacoes", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes"] } } },
+        { "name": "Deletar avaliacao", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/avaliacoes/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","avaliacoes","{{avaliacao_id}}"] } } }
       ]
     },
     {
       "name": "08 - Comentarios",
       "item": [
-        { "name": "Listar comentarios", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/comentarios", "host": ["{{base_url}}"], "path": ["api","v1","comentarios"] } } },
-        { "name": "Buscar comentario por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/comentarios/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","comentarios","{{avaliacao_id}}"] } } },
-        { "name": "Criar comentario", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"comentario\": \"Produto excelente, chegou antes do prazo e bem embalado!\",\n  \"avaliacao\": { \"id\": \"{{avaliacao_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/comentarios", "host": ["{{base_url}}"], "path": ["api","v1","comentarios"] } } },
-        { "name": "Deletar comentario", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/comentarios/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","comentarios","{{avaliacao_id}}"] } } }
+        { "name": "Listar comentarios", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/comentarios", "host": ["{{base_url}}"], "path": ["api","v1","comentarios"] } } },
+        { "name": "Buscar comentario por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/comentarios/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","comentarios","{{avaliacao_id}}"] } } },
+        { "name": "Criar comentario", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"comentario\": \"Produto excelente, chegou antes do prazo e bem embalado!\",\n  \"avaliacao\": { \"id\": \"{{avaliacao_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/comentarios", "host": ["{{base_url}}"], "path": ["api","v1","comentarios"] } } },
+        { "name": "Deletar comentario", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/comentarios/{{avaliacao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","comentarios","{{avaliacao_id}}"] } } }
       ]
     },
     {
       "name": "09 - Cartoes",
       "item": [
-        { "name": "Listar cartoes", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cartoes", "host": ["{{base_url}}"], "path": ["api","v1","cartoes"] } } },
-        { "name": "Buscar cartao por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}"] } } },
-        { "name": "Listar cartoes por cliente", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cartoes/cliente/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","cliente","{{cliente_id}}"] } } },
-        { "name": "Listar cartoes ativos do cliente", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cartoes/cliente/{{cliente_id}}/ativos", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","cliente","{{cliente_id}}","ativos"] } } },
-        { "name": "Criar cartao", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"titular\": \"MARIA SILVA\",\n  \"bandeira\": \"VISA\",\n  \"ultimosDigitos\": \"1234\",\n  \"ativo\": true,\n  \"cliente\": { \"id\": \"{{cliente_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/cartoes", "host": ["{{base_url}}"], "path": ["api","v1","cartoes"] } } },
-        { "name": "Atualizar cartao", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"titular\": \"MARIA SILVA\",\n  \"bandeira\": \"MASTERCARD\",\n  \"ultimosDigitos\": \"5678\",\n  \"ativo\": true,\n  \"cliente\": { \"id\": \"{{cliente_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}"] } } },
-        { "name": "Inativar cartao", "request": { "method": "PATCH", "header": [], "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}/inativar", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}","inativar"] } } },
-        { "name": "Deletar cartao", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}"] } } }
+        { "name": "Listar cartoes", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cartoes", "host": ["{{base_url}}"], "path": ["api","v1","cartoes"] } } },
+        { "name": "Buscar cartao por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}"] } } },
+        { "name": "Listar cartoes por cliente", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cartoes/cliente/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","cliente","{{cliente_id}}"] } } },
+        { "name": "Listar cartoes ativos do cliente", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cartoes/cliente/{{cliente_id}}/ativos", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","cliente","{{cliente_id}}","ativos"] } } },
+        { "name": "Criar cartao", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"titular\": \"MARIA SILVA\",\n  \"bandeira\": \"VISA\",\n  \"ultimosDigitos\": \"1234\",\n  \"ativo\": true,\n  \"cliente\": { \"id\": \"{{cliente_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/cartoes", "host": ["{{base_url}}"], "path": ["api","v1","cartoes"] } } },
+        { "name": "Atualizar cartao", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"titular\": \"MARIA SILVA\",\n  \"bandeira\": \"MASTERCARD\",\n  \"ultimosDigitos\": \"5678\",\n  \"ativo\": true,\n  \"cliente\": { \"id\": \"{{cliente_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}"] } } },
+        { "name": "Inativar cartao", "request": { "method": "PATCH", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}/inativar", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}","inativar"] } } },
+        { "name": "Deletar cartao", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cartoes/{{cartao_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cartoes","{{cartao_id}}"] } } }
       ]
     },
     {
       "name": "10 - Cupons",
       "item": [
-        { "name": "Listar cupons", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cupons", "host": ["{{base_url}}"], "path": ["api","v1","cupons"] } } },
-        { "name": "Listar cupons ativos", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cupons/ativos", "host": ["{{base_url}}"], "path": ["api","v1","cupons","ativos"] } } },
-        { "name": "Buscar cupom por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cupons/{{cupom_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cupons","{{cupom_id}}"] } } },
-        { "name": "Buscar cupom por codigo", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/cupons/codigo/FIAP10", "host": ["{{base_url}}"], "path": ["api","v1","cupons","codigo","FIAP10"] } } },
-        { "name": "Criar cupom", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"codigo\": \"FIAP10\",\n  \"tipoDesconto\": \"PERCENTUAL\",\n  \"valorDesconto\": 10.00,\n  \"quantidadeMaxima\": 100,\n  \"quantidadeUtilizada\": 0,\n  \"dataValidade\": \"2026-12-31\",\n  \"ativo\": true\n}" }, "url": { "raw": "{{base_url}}/api/v1/cupons", "host": ["{{base_url}}"], "path": ["api","v1","cupons"] } } },
-        { "name": "Atualizar cupom", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"codigo\": \"FIAP20\",\n  \"tipoDesconto\": \"FIXO\",\n  \"valorDesconto\": 50.00,\n  \"quantidadeMaxima\": 50,\n  \"quantidadeUtilizada\": 0,\n  \"dataValidade\": \"2026-12-31\",\n  \"ativo\": true\n}" }, "url": { "raw": "{{base_url}}/api/v1/cupons/{{cupom_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cupons","{{cupom_id}}"] } } },
-        { "name": "Deletar cupom", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/cupons/{{cupom_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cupons","{{cupom_id}}"] } } }
+        { "name": "Listar cupons", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cupons", "host": ["{{base_url}}"], "path": ["api","v1","cupons"] } } },
+        { "name": "Listar cupons ativos", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cupons/ativos", "host": ["{{base_url}}"], "path": ["api","v1","cupons","ativos"] } } },
+        { "name": "Buscar cupom por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cupons/{{cupom_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cupons","{{cupom_id}}"] } } },
+        { "name": "Buscar cupom por codigo", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cupons/codigo/FIAP10", "host": ["{{base_url}}"], "path": ["api","v1","cupons","codigo","FIAP10"] } } },
+        { "name": "Criar cupom", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"codigo\": \"FIAP10\",\n  \"tipoDesconto\": \"PERCENTUAL\",\n  \"valorDesconto\": 10.00,\n  \"quantidadeMaxima\": 100,\n  \"quantidadeUtilizada\": 0,\n  \"dataValidade\": \"2026-12-31\",\n  \"ativo\": true\n}" }, "url": { "raw": "{{base_url}}/api/v1/cupons", "host": ["{{base_url}}"], "path": ["api","v1","cupons"] } } },
+        { "name": "Atualizar cupom", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"codigo\": \"FIAP20\",\n  \"tipoDesconto\": \"FIXO\",\n  \"valorDesconto\": 50.00,\n  \"quantidadeMaxima\": 50,\n  \"quantidadeUtilizada\": 0,\n  \"dataValidade\": \"2026-12-31\",\n  \"ativo\": true\n}" }, "url": { "raw": "{{base_url}}/api/v1/cupons/{{cupom_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cupons","{{cupom_id}}"] } } },
+        { "name": "Deletar cupom", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/cupons/{{cupom_id}}", "host": ["{{base_url}}"], "path": ["api","v1","cupons","{{cupom_id}}"] } } }
       ]
     },
     {
       "name": "11 - Pagamentos",
       "item": [
-        { "name": "Listar pagamentos", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pagamentos", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos"] } } },
-        { "name": "Buscar pagamento por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pagamentos/{{pagamento_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","{{pagamento_id}}"] } } },
-        { "name": "Listar pagamentos por cliente", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pagamentos/cliente/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","cliente","{{cliente_id}}"] } } },
-        { "name": "Listar pagamentos por status PENDENTE", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pagamentos/status/PENDENTE", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","status","PENDENTE"] } } },
-        { "name": "Processar pagamento", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"cartao\": { \"id\": \"{{cartao_id}}\" },\n  \"cupom\": { \"id\": \"{{cupom_id}}\" },\n  \"metodoPagamento\": \"CARTAO_CREDITO\",\n  \"status\": \"PENDENTE\",\n  \"valorOriginal\": 8999.90,\n  \"valorDesconto\": 899.99,\n  \"valorFinal\": 8099.91\n}" }, "url": { "raw": "{{base_url}}/api/v1/pagamentos", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos"] } } },
-        { "name": "Atualizar status do pagamento", "request": { "method": "PATCH", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "\"APROVADO\"" }, "url": { "raw": "{{base_url}}/api/v1/pagamentos/{{pagamento_id}}/status", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","{{pagamento_id}}","status"] } } },
-        { "name": "Deletar pagamento", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/pagamentos/{{pagamento_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","{{pagamento_id}}"] } } }
+        { "name": "Listar pagamentos", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pagamentos", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos"] } } },
+        { "name": "Buscar pagamento por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pagamentos/{{pagamento_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","{{pagamento_id}}"] } } },
+        { "name": "Listar pagamentos por cliente", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pagamentos/cliente/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","cliente","{{cliente_id}}"] } } },
+        { "name": "Listar pagamentos por status PENDENTE", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pagamentos/status/PENDENTE", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","status","PENDENTE"] } } },
+        { "name": "Processar pagamento", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"cartao\": { \"id\": \"{{cartao_id}}\" },\n  \"cupom\": { \"id\": \"{{cupom_id}}\" },\n  \"metodoPagamento\": \"CARTAO_CREDITO\",\n  \"status\": \"PENDENTE\",\n  \"valorOriginal\": 8999.90,\n  \"valorDesconto\": 899.99,\n  \"valorFinal\": 8099.91\n}" }, "url": { "raw": "{{base_url}}/api/v1/pagamentos", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos"] } } },
+        { "name": "Atualizar status do pagamento", "request": { "method": "PATCH", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "\"APROVADO\"" }, "url": { "raw": "{{base_url}}/api/v1/pagamentos/{{pagamento_id}}/status", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","{{pagamento_id}}","status"] } } },
+        { "name": "Deletar pagamento", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pagamentos/{{pagamento_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pagamentos","{{pagamento_id}}"] } } }
       ]
     },
     {
       "name": "12 - Transportadoras",
       "item": [
-        { "name": "Listar transportadoras", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/transportadoras", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras"] } } },
-        { "name": "Buscar transportadora por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/transportadoras/{{transportadora_id}}", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras","{{transportadora_id}}"] } } },
-        { "name": "Criar transportadora", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Correios\",\n  \"pesoMin\": 0.1,\n  \"pesoMax\": 30.0,\n  \"valorBase\": 15.90,\n  \"prazoDias\": 7\n}" }, "url": { "raw": "{{base_url}}/api/v1/transportadoras", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras"] } } },
-        { "name": "Atualizar transportadora", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Correios Express\",\n  \"pesoMin\": 0.1,\n  \"pesoMax\": 30.0,\n  \"valorBase\": 25.90,\n  \"prazoDias\": 3\n}" }, "url": { "raw": "{{base_url}}/api/v1/transportadoras/{{transportadora_id}}", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras","{{transportadora_id}}"] } } },
-        { "name": "Deletar transportadora", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/transportadoras/{{transportadora_id}}", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras","{{transportadora_id}}"] } } }
+        { "name": "Listar transportadoras", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/transportadoras", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras"] } } },
+        { "name": "Buscar transportadora por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/transportadoras/{{transportadora_id}}", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras","{{transportadora_id}}"] } } },
+        { "name": "Criar transportadora", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Correios\",\n  \"pesoMin\": 0.1,\n  \"pesoMax\": 30.0,\n  \"valorBase\": 15.90,\n  \"prazoDias\": 7\n}" }, "url": { "raw": "{{base_url}}/api/v1/transportadoras", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras"] } } },
+        { "name": "Atualizar transportadora", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Correios Express\",\n  \"pesoMin\": 0.1,\n  \"pesoMax\": 30.0,\n  \"valorBase\": 25.90,\n  \"prazoDias\": 3\n}" }, "url": { "raw": "{{base_url}}/api/v1/transportadoras/{{transportadora_id}}", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras","{{transportadora_id}}"] } } },
+        { "name": "Deletar transportadora", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/transportadoras/{{transportadora_id}}", "host": ["{{base_url}}"], "path": ["api","v1","transportadoras","{{transportadora_id}}"] } } }
       ]
     },
     {
       "name": "13 - Entregas",
       "item": [
-        { "name": "Listar entregas", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/entregas", "host": ["{{base_url}}"], "path": ["api","v1","entregas"] } } },
-        { "name": "Buscar entrega por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}"] } } },
-        { "name": "Criar entrega", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"status\": \"AGUARDANDO_COLETA\",\n  \"valorFrete\": 25.90,\n  \"prazoDias\": 5,\n  \"pedido\": { \"id\": \"{{cliente_id}}\" },\n  \"transportadora\": { \"id\": \"{{transportadora_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/entregas", "host": ["{{base_url}}"], "path": ["api","v1","entregas"] } } },
-        { "name": "Atualizar status da entrega", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "\"EM_TRANSPORTE\"" }, "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}/atualiza-status", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}","atualiza-status"] } } },
-        { "name": "Atualizar transportadora da entrega", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "\"{{transportadora_id}}\"" }, "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}/atualiza-transportadora", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}","atualiza-transportadora"] } } },
-        { "name": "Deletar entrega", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}"] } } }
+        { "name": "Listar entregas", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/entregas", "host": ["{{base_url}}"], "path": ["api","v1","entregas"] } } },
+        { "name": "Buscar entrega por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}"] } } },
+        { "name": "Criar entrega", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"status\": \"AGUARDANDO_COLETA\",\n  \"valorFrete\": 25.90,\n  \"prazoDias\": 5,\n  \"pedido\": { \"id\": \"{{pedido_id}}\" },\n  \"transportadora\": { \"id\": \"{{transportadora_id}}\" }\n}" }, "url": { "raw": "{{base_url}}/api/v1/entregas", "host": ["{{base_url}}"], "path": ["api","v1","entregas"] } } },
+        { "name": "Atualizar status da entrega", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "\"EM_TRANSPORTE\"" }, "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}/atualiza-status", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}","atualiza-status"] } } },
+        { "name": "Atualizar transportadora da entrega", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "\"{{transportadora_id}}\"" }, "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}/atualiza-transportadora", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}","atualiza-transportadora"] } } },
+        { "name": "Deletar entrega", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/entregas/{{entrega_id}}", "host": ["{{base_url}}"], "path": ["api","v1","entregas","{{entrega_id}}"] } } }
       ]
     },
     {
       "name": "14 - Tickets (SAC)",
       "item": [
-        { "name": "Listar tickets", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/tickets", "host": ["{{base_url}}"], "path": ["api","v1","tickets"] } } },
-        { "name": "Buscar ticket por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/tickets/{{ticket_id}}", "host": ["{{base_url}}"], "path": ["api","v1","tickets","{{ticket_id}}"] } } },
-        { "name": "Criar ticket", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"titulo\": \"Produto com defeito\",\n  \"descricao\": \"O notebook chegou com a tela trincada.\",\n  \"status\": \"ABERTO\",\n  \"prioridade\": \"ALTA\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/tickets", "host": ["{{base_url}}"], "path": ["api","v1","tickets"] } } },
-        { "name": "Atualizar ticket", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"titulo\": \"Produto com defeito - em analise\",\n  \"descricao\": \"O notebook chegou com a tela trincada. Aguardando coleta.\",\n  \"status\": \"EM_ANDAMENTO\",\n  \"prioridade\": \"ALTA\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/tickets/{{ticket_id}}", "host": ["{{base_url}}"], "path": ["api","v1","tickets","{{ticket_id}}"] } } },
-        { "name": "Deletar ticket", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/tickets/{{ticket_id}}", "host": ["{{base_url}}"], "path": ["api","v1","tickets","{{ticket_id}}"] } } }
+        { "name": "Listar tickets", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/tickets", "host": ["{{base_url}}"], "path": ["api","v1","tickets"] } } },
+        { "name": "Buscar ticket por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/tickets/{{ticket_id}}", "host": ["{{base_url}}"], "path": ["api","v1","tickets","{{ticket_id}}"] } } },
+        { "name": "Criar ticket", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"titulo\": \"Produto com defeito\",\n  \"descricao\": \"O notebook chegou com a tela trincada.\",\n  \"status\": \"ABERTO\",\n  \"prioridade\": \"ALTA\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/tickets", "host": ["{{base_url}}"], "path": ["api","v1","tickets"] } } },
+        { "name": "Atualizar ticket", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"titulo\": \"Produto com defeito - em analise\",\n  \"descricao\": \"O notebook chegou com a tela trincada. Aguardando coleta.\",\n  \"status\": \"EM_ANDAMENTO\",\n  \"prioridade\": \"ALTA\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/tickets/{{ticket_id}}", "host": ["{{base_url}}"], "path": ["api","v1","tickets","{{ticket_id}}"] } } },
+        { "name": "Deletar ticket", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/tickets/{{ticket_id}}", "host": ["{{base_url}}"], "path": ["api","v1","tickets","{{ticket_id}}"] } } }
       ]
     },
     {
       "name": "15 - Mensagens (SAC)",
       "item": [
-        { "name": "Listar mensagens", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/mensagens", "host": ["{{base_url}}"], "path": ["api","v1","mensagens"] } } },
-        { "name": "Buscar mensagem por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/mensagens/{{mensagem_id}}", "host": ["{{base_url}}"], "path": ["api","v1","mensagens","{{mensagem_id}}"] } } },
-        { "name": "Enviar mensagem", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"ticket\": { \"id\": \"{{ticket_id}}\" },\n  \"conteudo\": \"Gostaria de saber o prazo para troca do produto.\",\n  \"autor\": \"maria.silva@email.com\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/mensagens", "host": ["{{base_url}}"], "path": ["api","v1","mensagens"] } } },
-        { "name": "Atualizar mensagem", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"ticket\": { \"id\": \"{{ticket_id}}\" },\n  \"conteudo\": \"Gostaria de saber o prazo para troca do produto. Urgente!\",\n  \"autor\": \"maria.silva@email.com\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/mensagens/{{mensagem_id}}", "host": ["{{base_url}}"], "path": ["api","v1","mensagens","{{mensagem_id}}"] } } },
-        { "name": "Deletar mensagem", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/mensagens/{{mensagem_id}}", "host": ["{{base_url}}"], "path": ["api","v1","mensagens","{{mensagem_id}}"] } } }
+        { "name": "Listar mensagens", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/mensagens", "host": ["{{base_url}}"], "path": ["api","v1","mensagens"] } } },
+        { "name": "Buscar mensagem por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/mensagens/{{mensagem_id}}", "host": ["{{base_url}}"], "path": ["api","v1","mensagens","{{mensagem_id}}"] } } },
+        { "name": "Enviar mensagem", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"ticket\": { \"id\": \"{{ticket_id}}\" },\n  \"conteudo\": \"Gostaria de saber o prazo para troca do produto.\",\n  \"autor\": \"maria.silva@email.com\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/mensagens", "host": ["{{base_url}}"], "path": ["api","v1","mensagens"] } } },
+        { "name": "Atualizar mensagem", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"ticket\": { \"id\": \"{{ticket_id}}\" },\n  \"conteudo\": \"Gostaria de saber o prazo para troca do produto. Urgente!\",\n  \"autor\": \"maria.silva@email.com\"\n}" }, "url": { "raw": "{{base_url}}/api/v1/mensagens/{{mensagem_id}}", "host": ["{{base_url}}"], "path": ["api","v1","mensagens","{{mensagem_id}}"] } } },
+        { "name": "Deletar mensagem", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/mensagens/{{mensagem_id}}", "host": ["{{base_url}}"], "path": ["api","v1","mensagens","{{mensagem_id}}"] } } }
       ]
     },
     {
       "name": "16 - Estoques",
       "item": [
-        { "name": "Buscar estoque por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/estoques/{{estoque_id}}", "host": ["{{base_url}}"], "path": ["api","v1","estoques","{{estoque_id}}"] } } },
-        { "name": "Listar estoques por lojista", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/estoques/lojista/{{lojista_id}}", "host": ["{{base_url}}"], "path": ["api","v1","estoques","lojista","{{lojista_id}}"] } } },
-        { "name": "Criar estoque", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"lojista\": { \"id\": \"{{lojista_id}}\" },\n  \"pesoTotal\": 500.0,\n  \"valorTotal\": 150000.00\n}" }, "url": { "raw": "{{base_url}}/api/v1/estoques", "host": ["{{base_url}}"], "path": ["api","v1","estoques"] } } },
-        { "name": "Deletar estoque", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/estoques/{{estoque_id}}", "host": ["{{base_url}}"], "path": ["api","v1","estoques","{{estoque_id}}"] } } }
+        { "name": "Listar estoques", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/estoques", "host": ["{{base_url}}"], "path": ["api","v1","estoques"] } } },
+        { "name": "Buscar estoque por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/estoques/{{estoque_id}}", "host": ["{{base_url}}"], "path": ["api","v1","estoques","{{estoque_id}}"] } } },
+        { "name": "Listar estoques por lojista", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/estoques/lojista/{{lojista_id}}", "host": ["{{base_url}}"], "path": ["api","v1","estoques","lojista","{{lojista_id}}"] } } },
+        { "name": "Criar estoque", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"lojista\": { \"id\": \"{{lojista_id}}\" },\n  \"pesoTotal\": 500.0,\n  \"valorTotal\": 150000.00\n}" }, "url": { "raw": "{{base_url}}/api/v1/estoques", "host": ["{{base_url}}"], "path": ["api","v1","estoques"] } } },
+        { "name": "Deletar estoque", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/estoques/{{estoque_id}}", "host": ["{{base_url}}"], "path": ["api","v1","estoques","{{estoque_id}}"] } } }
       ]
     },
     {
       "name": "17 - Setores",
       "item": [
-        { "name": "Listar setores", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/setores", "host": ["{{base_url}}"], "path": ["api","v1","setores"] } } },
-        { "name": "Buscar setor por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/setores/{{setor_id}}", "host": ["{{base_url}}"], "path": ["api","v1","setores","{{setor_id}}"] } } },
-        { "name": "Criar setor", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Setor A - Eletronicos\",\n  \"numerosCorredor\": 5,\n  \"prateleira\": 20\n}" }, "url": { "raw": "{{base_url}}/api/v1/setores", "host": ["{{base_url}}"], "path": ["api","v1","setores"] } } },
-        { "name": "Deletar setor", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/setores/{{setor_id}}", "host": ["{{base_url}}"], "path": ["api","v1","setores","{{setor_id}}"] } } }
+        { "name": "Listar setores", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/setores", "host": ["{{base_url}}"], "path": ["api","v1","setores"] } } },
+        { "name": "Buscar setor por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/setores/{{setor_id}}", "host": ["{{base_url}}"], "path": ["api","v1","setores","{{setor_id}}"] } } },
+        { "name": "Criar setor", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Setor A - Eletronicos\",\n  \"numerosCorredor\": 5,\n  \"prateleira\": 20\n}" }, "url": { "raw": "{{base_url}}/api/v1/setores", "host": ["{{base_url}}"], "path": ["api","v1","setores"] } } },
+        { "name": "Deletar setor", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/setores/{{setor_id}}", "host": ["{{base_url}}"], "path": ["api","v1","setores","{{setor_id}}"] } } }
       ]
     },
     {
       "name": "18 - Pedidos",
       "item": [
-        { "name": "Listar pedidos", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pedidos", "host": ["{{base_url}}"], "path": ["api","v1","pedidos"] } } },
-        { "name": "Buscar pedido por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","{{pedido_id}}"] } } },
-        { "name": "Listar pedidos por cliente", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/pedidos/cliente/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","cliente","{{cliente_id}}"] } } },
-        { "name": "Criar pedido", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"numeroPedido\": 1001,\n  \"dataEntrega\": \"2026-06-30\",\n  \"valorFinal\": 8999.90\n}" }, "url": { "raw": "{{base_url}}/api/v1/pedidos", "host": ["{{base_url}}"], "path": ["api","v1","pedidos"] } } },
-        { "name": "Atualizar pedido", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"numeroPedido\": 1001,\n  \"dataEntrega\": \"2026-07-15\",\n  \"valorFinal\": 7999.90\n}" }, "url": { "raw": "{{base_url}}/api/v1/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","{{pedido_id}}"] } } },
-        { "name": "Deletar pedido", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","{{pedido_id}}"] } } }
+        { "name": "Listar pedidos", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pedidos", "host": ["{{base_url}}"], "path": ["api","v1","pedidos"] } } },
+        { "name": "Buscar pedido por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","{{pedido_id}}"] } } },
+        { "name": "Listar pedidos por cliente", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pedidos/cliente/{{cliente_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","cliente","{{cliente_id}}"] } } },
+        { "name": "Criar pedido", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"numeroPedido\": 1001,\n  \"dataEntrega\": \"2026-06-30\",\n  \"valorFinal\": 8999.90\n}" }, "url": { "raw": "{{base_url}}/api/v1/pedidos", "host": ["{{base_url}}"], "path": ["api","v1","pedidos"] } } },
+        { "name": "Atualizar pedido", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"cliente\": { \"id\": \"{{cliente_id}}\" },\n  \"numeroPedido\": 1001,\n  \"dataEntrega\": \"2026-07-15\",\n  \"valorFinal\": 7999.90\n}" }, "url": { "raw": "{{base_url}}/api/v1/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","{{pedido_id}}"] } } },
+        { "name": "Deletar pedido", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/pedidos/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","pedidos","{{pedido_id}}"] } } }
       ]
     },
     {
       "name": "19 - Itens de Pedido",
       "item": [
-        { "name": "Listar itens de pedido", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/itens-pedido", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido"] } } },
-        { "name": "Buscar item de pedido por ID", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/itens-pedido/{{item_pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","{{item_pedido_id}}"] } } },
-        { "name": "Listar itens por pedido", "request": { "method": "GET", "header": [], "url": { "raw": "{{base_url}}/api/v1/itens-pedido/pedido/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","pedido","{{pedido_id}}"] } } },
-        { "name": "Criar item de pedido", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"pedido\": { \"id\": \"{{pedido_id}}\" },\n  \"produto\": { \"id\": \"{{produto_id}}\" },\n  \"valorItem\": 8999.90,\n  \"quantidade\": 1\n}" }, "url": { "raw": "{{base_url}}/api/v1/itens-pedido", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido"] } } },
-        { "name": "Atualizar item de pedido", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"pedido\": { \"id\": \"{{pedido_id}}\" },\n  \"produto\": { \"id\": \"{{produto_id}}\" },\n  \"valorItem\": 8999.90,\n  \"quantidade\": 2\n}" }, "url": { "raw": "{{base_url}}/api/v1/itens-pedido/{{item_pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","{{item_pedido_id}}"] } } },
-        { "name": "Deletar item de pedido", "request": { "method": "DELETE", "header": [], "url": { "raw": "{{base_url}}/api/v1/itens-pedido/{{item_pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","{{item_pedido_id}}"] } } }
+        { "name": "Listar itens de pedido", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/itens-pedido", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido"] } } },
+        { "name": "Buscar item de pedido por ID", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/itens-pedido/{{item_pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","{{item_pedido_id}}"] } } },
+        { "name": "Listar itens por pedido", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/itens-pedido/pedido/{{pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","pedido","{{pedido_id}}"] } } },
+        { "name": "Criar item de pedido", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"pedido\": { \"id\": \"{{pedido_id}}\" },\n  \"produto\": { \"id\": \"{{produto_id}}\" },\n  \"valorItem\": 8999.90,\n  \"quantidade\": 1\n}" }, "url": { "raw": "{{base_url}}/api/v1/itens-pedido", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido"] } } },
+        { "name": "Atualizar item de pedido", "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}], "body": { "mode": "raw", "raw": "{\n  \"pedido\": { \"id\": \"{{pedido_id}}\" },\n  \"produto\": { \"id\": \"{{produto_id}}\" },\n  \"valorItem\": 8999.90,\n  \"quantidade\": 2\n}" }, "url": { "raw": "{{base_url}}/api/v1/itens-pedido/{{item_pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","{{item_pedido_id}}"] } } },
+        { "name": "Deletar item de pedido", "request": { "method": "DELETE", "header": [{"key":"Authorization","value":"Bearer {{token}}"}], "url": { "raw": "{{base_url}}/api/v1/itens-pedido/{{item_pedido_id}}", "host": ["{{base_url}}"], "path": ["api","v1","itens-pedido","{{item_pedido_id}}"] } } }
       ]
     }
   ]
